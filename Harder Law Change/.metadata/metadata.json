@@ -1,9 +1,9 @@
 ﻿{
 	"name":	"Harder Law Change",
 	"id":	"harder_law",
-	"version":	"0.1",
+	"version":	"1.0",
 	"supported_game_version":	"1.0.10",
-	"short_description":	"Raises the minimum support required to change law in parliament/council to 60%, so the player can't just revise the country's starting institutions at a stroke.",
+	"short_description":	"Raises the minimum support required to change law in parliament to 60%.",
 	"tags":	["Balance"],
 	"relationships":	[],
 	"game_custom_data":	{

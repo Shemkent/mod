@@ -1,0 +1,5 @@
+﻿REPLACE:country_base_values = {
+
+	parliament_request_issue_support_needed = 0.6
+	
+}
