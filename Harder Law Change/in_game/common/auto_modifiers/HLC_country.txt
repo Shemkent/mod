@@ -1,5 +1,5 @@
-﻿REPLACE:country_base_values = {
-
-	parliament_request_issue_support_needed = 0.6
-	
+﻿# didnt use try bc i dont think this modifier is going away / renamed
+# this adds 10% on top of original requirement
+INJECT:country_base_values = {
+	parliament_request_issue_support_needed = 0.1
 }
