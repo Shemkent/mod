@@ -1,0 +1,8 @@
+﻿# all other positive values halved from original
+TRY_INJECT:nov_financing_ushkuyniks_pirates = {
+	privateer_durability = -0.10
+}
+
+TRY_INJECT:nov_ushkuiniks_dissolved = {
+	privateer_durability = 0.125
+}

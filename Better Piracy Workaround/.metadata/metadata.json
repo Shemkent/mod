@@ -1,0 +1,11 @@
+﻿{
+	"name":	"Better Piracy Workaround",
+	"id":	"better_piracy_workaround",
+	"version":	"1.0",
+	"supported_game_version":	"1.0.10",
+	"short_description":	"Revises privateer durability all around the game. Slashes default pirate durability to 0.01 (about 20% of the original 0.05) which should be managable with a couple boats. Also revises privateer durability in tech tree and elsewhere.\nThis is an improved version of an existing mod \"Piracy Workaround for 1.05\" which could cause new modifiers added in updates to become non-functional .",
+	"tags":	["Fixes", "Gameplay"],
+	"relationships":	[],
+	"game_custom_data":	{
+}
+}

@@ -1,0 +1,4 @@
+﻿# didnt use try bc i dont think this modifier is going away / renamed
+INJECT:country_base_values = {
+	privateer_durability = -0.04 # originally 0.05 in vanilla as of 1.0.5.
+}

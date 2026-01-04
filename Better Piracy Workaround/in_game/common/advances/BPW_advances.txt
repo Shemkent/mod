@@ -1,0 +1,25 @@
+# all are half of original 
+
+# 0_age_of_reformation.txt
+TRY_INJECT:sturdy_privateers = {
+	privateer_durability = -0.10
+}
+
+# country_NED.txt
+TRY_INJECT:frisian_legend_grutte_pier = {
+	privateer_maintenance_cost_modifier = -0.1
+}
+
+# country_NOV.txt
+TRY_INJECT:ushkuiniks = {
+	privateer_durability = -0.125 
+}
+
+# japanese_unique.txt
+TRY_INJECT:soo_bahan_ship = {
+	privateer_durability = -0.1 
+}
+
+TRY_INJECT:kno_murakami_suigun = {
+	privateer_durability = -0.1
+}
