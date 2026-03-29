@@ -1,0 +1,3 @@
+﻿REPLACE:country_base_values = {
+	privateer_durability = 0.01 # originally 0.05 in vanilla as of 1.0.5.
+}

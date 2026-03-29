@@ -1,32 +1,13 @@
-# Game binaries and executables
-*.exe
-*.dll
-*.so
+# Ignore everything by default
+/*
 
-# Cache and temporary files
-*.cache
-*.tmp
-*.log
-__pycache__/
-*.pyc
+# Except annotations and mod directories
+!/annotations/
+!/mod/
+!.gitignore
+!README.md
 
-# Steam user data and profiles
-userprofile/
-profiles/
-saves/
-
-# Operating system files
-.DS_Store
-Thumbs.db
-.Thumbs.db
-
-# IDE and editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Mod development temp files
-*.mod.backup
-*.mod.old
+# Within mod directories, ignore backup/temp files
+mod/**/*.mod.backup
+mod/**/*.mod.old
+mod/**/*.tmp
