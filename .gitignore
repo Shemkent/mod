@@ -1,9 +1,10 @@
 # Ignore everything by default
 /*
 
-# Except annotations and mod directories
+# Except project directories
 !/annotations/
 !/mod/
+!/.claude/
 !.gitignore
 !README.md
 
