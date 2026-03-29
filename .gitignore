@@ -1,0 +1,32 @@
+# Game binaries and executables
+*.exe
+*.dll
+*.so
+
+# Cache and temporary files
+*.cache
+*.tmp
+*.log
+__pycache__/
+*.pyc
+
+# Steam user data and profiles
+userprofile/
+profiles/
+saves/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+.Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Mod development temp files
+*.mod.backup
+*.mod.old
