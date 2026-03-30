@@ -1,2 +1,4 @@
 # Disasters
+**Stage:** stub
+**Keywords:**
 
