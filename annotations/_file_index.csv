@@ -1,0 +1,29 @@
+file,systems,stage,game_version
+in_game/common/age/00_default.txt,age,annotated,1.1.10
+in_game/common/ai_diplochance/00_ai_diplochance.txt,ai_diplochance,annotated,1.1.10
+in_game/common/ai_diplochance/ai_diplochance.info,ai_diplochance,annotated,1.1.10
+in_game/common/alert_descriptions/00_default.txt,alert_descriptions,annotated,1.1.10
+in_game/common/advances/readme.txt,advances,annotated,1.1.10
+in_game/common/advances/_advances_template.txt,advances,annotated,1.1.10
+in_game/common/advances/ctype_army.txt,advances,annotated,1.1.10
+in_game/common/advances/ctype_location.txt,advances,annotated,1.1.10
+in_game/common/advances/ctype_buildings.txt,advances,annotated,1.1.10
+in_game/common/advances/government_monarchy.txt,advances,annotated,1.1.10
+in_game/common/advances/government_republic.txt,advances,annotated,1.1.10
+in_game/common/advances/government_theocracy.txt,advances,annotated,1.1.10
+in_game/common/advances/country_FRA.txt,advances,annotated,1.1.10
+in_game/common/advances/[100+ additional files — see advances/ folder],advances,annotated,1.1.10
+in_game/common/artist_types/00_default.txt,artist_types,annotated,1.1.10
+in_game/common/artist_types/readme.txt,artist_types,annotated,1.1.10
+in_game/common/artist_work/00_default.txt,artist_work,annotated,1.1.10
+in_game/common/artist_work/readme.txt,artist_work,annotated,1.1.10
+in_game/common/attribute_columns/00_defaults.txt,attribute_columns,annotated,1.1.10
+in_game/common/attribute_columns/06_country.txt,attribute_columns,annotated,1.1.10
+in_game/common/attribute_columns/[50+ additional files — see attribute_columns/ folder],attribute_columns,annotated,1.1.10
+in_game/common/auto_modifiers/country.txt,auto_modifiers,annotated,1.1.10
+in_game/common/auto_modifiers/dynasty.txt,auto_modifiers,annotated,1.1.10
+in_game/common/auto_modifiers/international_organization.txt,auto_modifiers,annotated,1.1.10
+in_game/common/auto_modifiers/location.txt,auto_modifiers,annotated,1.1.10
+in_game/common/auto_modifiers/readme.txt,auto_modifiers,annotated,1.1.10
+in_game/common/avatars/hindu.txt,avatars,annotated,1.1.10
+in_game/common/avatars/readme.txt,avatars,annotated,1.1.10
