@@ -33,3 +33,5 @@ in_game/common/laws/[30 files — see laws/ folder],laws,annotated,1.1.10
 in_game/common/government_types/00_default.txt,government_types,annotated,1.1.10
 in_game/common/government_reforms/[8 files — see government_reforms/ folder],government_reforms,annotated,1.1.10
 in_game/common/traits/[8 files — see traits/ folder],traits,annotated,1.1.10
+in_game/common/production_methods/unsorted_building_inputs.txt,production_methods,annotated,1.1.10
+in_game/common/production_methods/__readme.txt,production_methods,annotated,1.1.10
