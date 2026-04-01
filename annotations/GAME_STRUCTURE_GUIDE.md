@@ -109,7 +109,7 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 | `in_game/common/character_interactions/` | character_interactions | stub |
 | `in_game/common/child_educations/` | character_interactions | unmapped |
 | `in_game/common/heir_selections/` | character_interactions | unmapped |
-| `in_game/common/traits/` | traits | stub |
+| `in_game/common/traits/` | traits | annotated |
 | `in_game/common/trait_flavor/` | traits | unmapped |
 | `in_game/common/genes/` | genes | unmapped |
 | `in_game/common/persistent_dna/` | genes | unmapped |
