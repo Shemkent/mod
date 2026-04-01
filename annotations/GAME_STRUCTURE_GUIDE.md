@@ -122,7 +122,7 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 | `in_game/common/technologies/` | technologies | n/a — folder absent in v1.1.10; see advances |
 | `in_game/common/age/` | age | complete |
 | `in_game/common/institution/` | institutions | unmapped |
-| `in_game/common/disasters/` | disasters | stub |
+| `in_game/common/disasters/` | disasters | annotated |
 | `in_game/common/missions/` | missions | stub |
 | `in_game/common/mission_task_defs/` | missions | unmapped |
 | `main_menu/common/achievements/` | achievements | unmapped |
