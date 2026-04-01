@@ -40,7 +40,7 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 |---|---|---|
 | `in_game/common/government_types/` | government_types | stub |
 | `in_game/common/government_reforms/` | government_reforms | stub |
-| `in_game/common/laws/` | laws | stub |
+| `in_game/common/laws/` | laws | annotated |
 | `in_game/common/policies/` | policies | stub |
 | `in_game/common/cabinet_actions/` | government_types | unmapped |
 | `in_game/common/parliament_types/` | government_types | unmapped |
