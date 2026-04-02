@@ -1,6 +1,6 @@
 # Generic Actions
 **Stage:** complete
-**Keywords:** generic_action, type, owncountry, diplomacy, subject, character, location, internationalorganization, situation, internationalorganizationparliament, ai_tick, ai_tick_frequency, automation_tick, player_automated_category, select_trigger, potential, allow, effect, ai_will_do, price, cooldown, show_in_gui_list
+**Keywords:** generic_action, type, owncountry, diplomacy, subject, character, location, internationalorganization, situation, internationalorganizationparliament, religious, religiousfaction, ai_tick, ai_tick_frequency, automation_tick, player_automated_category, select_trigger, potential, allow, effect, ai_will_do, price, cooldown, show_in_gui_list
 
 > **System type: Gameplay**
 
@@ -16,7 +16,7 @@ Generic actions are the fully-scripted, no-code action system for EU5. Any butto
 ```pdx
 <action_id> = {
     # --- Type (determines scope context) ---
-    type = owncountry/diplomacy/subject/character/location/internationalorganization/situation/internationalorganizationparliament
+    type = owncountry/diplomacy/subject/character/location/internationalorganization/situation/internationalorganizationparliament/religious/religiousfaction
 
     # --- Sound & messaging ---
     sound   = <sound_key>
@@ -100,7 +100,7 @@ Generic actions are the fully-scripted, no-code action system for EU5. Any butto
     }
 
     # --- Effects ---
-    effect = { <effect> }    # scope:actor, scope:recipient, scope:target...; + scope:price, scope:payer, scope:payee
+    effect = { <effect> }    # scope:actor, scope:recipient, scope:target...; + scope:price, scope:price_modifier, scope:payer, scope:payee
 
     # --- UI ---
     force_click_and_confirm_or_hold = yes    # always show confirmation dialog
@@ -118,6 +118,8 @@ Generic actions are the fully-scripted, no-code action system for EU5. Any butto
 | `internationalorganization` | Scopes into an IO | Joining, leaving, IO-specific actions |
 | `situation` | Scopes into a situation | Actions tied to active situations |
 | `internationalorganizationparliament` | Scopes into an IO parliament | Parliamentary vote actions |
+| `religious` | Scopes into a religion | Actions tied to a specific religion |
+| `religiousfaction` | Scopes into a religious faction | Actions tied to religious factions within a religion |
 
 ## Key Fields Reference
 | Field | Purpose | Key constraint |
@@ -141,7 +143,7 @@ Generic actions are the fully-scripted, no-code action system for EU5. Any butto
 - **`ai_tick = never`** is the correct way to disable AI use of an action that is already handled by code-side AI or is player-only. Do not rely on `ai_will_do` returning 0, as the action may still be evaluated and just score nothing.
 - **`player_automated_category`** ties the action into EU5's player automation system. If the player enables automation for that category, the action runs on `automation_tick` following `ai_will_do` scoring. Only the fixed category strings are valid; unknown strings are silently ignored.
 - **`maximum_targets_in_one_tick`** with `disallowed_duplicates_of_targets_for_ai` lets the AI act on multiple non-overlapping targets in a single evaluation pass — useful for bulk-construction or mass-hiring actions.
-- **`force_click_and_confirm_or_hold`** exists specifically because IO parliament war-declaration actions would otherwise fire immediately on click without triggering the standard war declaration UI. Use for any action whose consequence is very difficult to reverse.
+- **`force_click_and_confirm_or_hold`** forces a confirmation dialog before the action fires. Used in vanilla for IO actions (e.g. `tatar_yoke.txt`) where an immediate click would bypass the normal confirmation flow. Use for any action whose consequence is difficult to reverse.
 - **Cooldown sharing:** as with country interactions, `cooldown.type` is a shared tag. Multiple actions with the same type share one cooldown counter. This can be intentional (e.g. all "ask for money" variants share a cooldown) or an accidental collision if the same tag is reused in a mod.
 - **`select_trigger` is the full shared selection schema** (identical to country interactions and peace treaties). Refer to `readme.txt` for the complete field list. Performance-critical fields: `source_flags`, `cache_targets`, `ai_override_value`, `ai_interaction_source_list`.
 
@@ -165,7 +167,7 @@ hire_advisor = {
     ai_will_do = {
         scope:actor = {
             value = {
-                add = modifier:government_size   # how many advisors are needed
+                add = modifier:government_size   # target headcount (how many you should have)
                 subtract = num_cabinet_capable_characters
                 multiply = 14                    # scaling weight
             }

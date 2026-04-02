@@ -5,7 +5,7 @@
 > **System type: Gameplay**
 
 ## Overview
-International organizations (IOs) are shared multi-country entities that sit above bilateral diplomacy — the HRE, the Papacy, merchant leagues, military alliances, jihad organizations, and many others. Each IO type defines membership rules, leader selection, war-joining behaviour, modifiers for members and leader, optional land ownership, an optional parliament, and monthly payments between members. Four companion folders extend the type definition: `_payments/` (monthly resource transfers), `_special_statuses/` (titles or roles within an IO like Elector or Emperor), `_land_ownership_rules/` (IO-held territory rules), and `_special_statuses/` (per-status triggers and effects). Modders creating new league, religious confederation, or trade network concepts work primarily in these four folders.
+International organizations (IOs) are shared multi-country entities that sit above bilateral diplomacy — the HRE, the Papacy, merchant leagues, military alliances, jihad organizations, and many others. Each IO type defines membership rules, leader selection, war-joining behaviour, modifiers for members and leader, optional land ownership, an optional parliament, and monthly payments between members. Three companion folders extend the type definition: `_payments/` (monthly resource transfers), `_special_statuses/` (per-country titles and roles within an IO, such as HRE Elector or Emperor, with their own triggers, modifiers, and lifecycle effects), and `_land_ownership_rules/` (IO-held territory rules). Modders creating new military leagues, tribute systems, or trade federations work primarily in these four folders.
 
 ## Vanilla File Locations
 - `in_game/common/international_organizations/` — one `.txt` per IO type (~35 files + readme)
@@ -78,7 +78,7 @@ International organizations (IOs) are shared multi-country entities that sit abo
     can_build_buildings_in_members   = yes/no
     can_build_rgos_in_members        = yes/no
 
-    # --- Modifiers (scale blocks; root = country, scope:recipient = IO) ---
+    # --- Modifiers (scale blocks — modifier fields multiplied by a script-value scale; root = country, scope:recipient = IO) ---
     modifier                        = { <modifier block> }  # all members
     leader_modifier                 = { <modifier block> }  # leader only
     non_leader_modifier             = { <modifier block> }  # non-leader members
@@ -100,7 +100,7 @@ International organizations (IOs) are shared multi-country entities that sit abo
 
     # --- Finance ---
     payments_implemented = { <payment_id> ... }
-    <currency_type>      = yes/no   # treasury holding
+    <currency_type>      = yes/no   # treasury holding; valid types include gold, manpower — check modifier definitions for the full list
 
     # --- Special statuses ---
     special_statuses_implemented = { <special_status_id> ... }
@@ -167,7 +167,7 @@ International organizations (IOs) are shared multi-country entities that sit abo
     can_invite_countries         = yes/no
     use_laws_as_join_reason      = yes/no
     annulled_by_peace_treaty     = yes/no
-    annullment_favours_required  = <int>
+    annullment_favours_required  = <int>    # note: "annullment" is the vanilla spelling (double-l); match it exactly
     has_dynastic_power           = yes/no
     declare_war_on_target_casus_belli = <cb_id>
 
@@ -244,13 +244,14 @@ International organizations (IOs) are shared multi-country entities that sit abo
 | `land_ownership_rule` | Links to a rule in `_land_ownership_rules/`; enables IO to hold territory | Without this, IO has no territorial ownership |
 | `only_leader_country_joins_defensive_wars` | Performance optimisation: only leader is checked for war calls | Set yes for large IOs (HRE) to avoid checking every member |
 | `min_opinion` / `min_trust` | Floor below which IO disbands | Expensive on large IOs — use with caution |
-| `modifier` vs `leader_modifier` vs `non_leader_modifier` | Member-wide vs leader-only vs non-leader modifiers | All are scale blocks (root = country, scope:recipient = IO) |
+| `has_enemies` | Whether the IO can have designated enemy countries (distinct from having a `has_target` country) | Enables `add_enemy_to_international_organization` effect and enemy-related triggers |
+| `modifier` vs `leader_modifier` vs `non_leader_modifier` | Member-wide vs leader-only vs non-leader modifiers | All are scale blocks: modifier fields are multiplied by a script-value scale attached to each modifier definition |
 | `special_status_power` | Voting weight in IO parliament per-status | Only relevant when `has_parliament = yes` |
 
 ## Modding Notes
-- **IO type vs IO instance:** The files define _types_. Instances are created in script (via `create_international_organization`) or at game start (hardcoded). Adding a new IO type alone does not put it in the game — it must be created somewhere.
+- **IO type vs IO instance:** The files define _types_. To make an IO appear in a game, create an instance via `create_international_organization` in a history file, an on-action, or an event effect. Defining the type alone has no effect.
 - **`payments_implemented` and `special_statuses_implemented`** list which payment/status IDs are active at creation time. These IDs must exist in their respective companion folders. Laws and policies can activate more during gameplay.
-- **`modifier`, `leader_modifier`, `non_leader_modifier`** are scale blocks, not flat modifier blocks. They are multiplied by some scale value — the scale is determined by a script value attached to the modifier itself (not shown in the block structure above but driven by the modifier definition). In practice, most vanilla IO modifiers use flat `= 1` scale.
+- **`modifier`, `leader_modifier`, `non_leader_modifier`** are scale blocks, not flat modifier blocks. Each modifier field is multiplied by a script-value scale defined inside the modifier itself. Most vanilla IO modifiers use a flat scale of `1`, making them behave like ordinary modifiers in practice.
 - **`auto_bestowal_trigger`** and **`auto_rescind_trigger`** on special statuses fire monthly for every member. Keep them cheap.
 - **`has_dynastic_power = yes`** enables influential dynasties to exert power within the IO (used by HRE for Habsburg dominance mechanics). Requires supporting scripted infrastructure.
 - **`can_initiate_policy_votes`** controls which members can bring policies to a vote, separate from who can vote. Not the same as `can_lead_trigger`.

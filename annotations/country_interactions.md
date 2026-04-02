@@ -5,7 +5,7 @@
 > **System type: Gameplay**
 
 ## Overview
-Country interactions are scripted diplomatic or subject-management actions one country can perform toward another (or on itself). Each block defines who can see and use the action, what must be selected as a target, what it costs, what happens when accepted or rejected, how the AI decides to use it, and UI presentation flags. They cover everything from requesting military access and offering alliances to enforcing religion on subjects, demanding money, and breaking unions. Interactions differ from generic actions in that they reference another country (`type = diplomacy` or `type = subject`) rather than acting on oneself or a location. The `diplomatic_costs/` and `insults/` sub-folders extend this system.
+Country interactions are scripted diplomatic or subject-management actions one country can perform toward another (or on itself). Each block defines who can see and use the action, what must be selected as a target, what it costs, and what happens when accepted or rejected. They include requesting military access, offering alliances, enforcing religion on subjects, demanding money, and breaking unions. Interactions differ from generic actions because they target another country (`type = diplomacy` or `type = subject`) rather than acting on oneself or a location. The `diplomatic_costs/` and `insults/` sub-folders extend this system.
 
 ## Vanilla File Locations
 - `in_game/common/country_interactions/` — one or a few `.txt` files per interaction category (~70+ files)
@@ -86,7 +86,7 @@ Country interactions are scripted diplomatic or subject-management actions one c
     ai_tick           = never/daily/monthly
     ai_tick_frequency = { <script value> }
     ai_limit_per_check = <int>     # max countries AI targets per check
-    ai_will_do        = { <effect script> }  # scope:actor, scope:recipient, scope:target
+    ai_will_do        = { <script value> }   # scores how much AI wants to use this; scope:actor, scope:recipient, scope:target
     ai_prerequisite   = { <trigger> }        # cheap early-out for AI (scope:actor only)
 
     # --- Effects ---
@@ -112,19 +112,24 @@ Country interactions are scripted diplomatic or subject-management actions one c
 | `accept` | Legacy script-value AI acceptance | Use `diplo_chance` instead; both can coexist |
 | `ai_tick` | How often AI evaluates this action | `never` prevents all AI use; `daily` is expensive for actions with many targets |
 | `ai_limit_per_check` | Max number of targets AI processes per evaluation | Default 1; set higher for multi-target spamming actions |
-| `reject_effect` | Fires only when the target AI declines | Not available for actions without an acceptance step (owncountry type) |
+| `reject_effect` | Fires only when the target AI declines | Not available for actions without an acceptance step (e.g. `type = owncountry`, which has no target to accept/decline) |
 | `show_in_gui_list` | Hides from auto-generated GUI lists | Set `no` for actions driven by specific UI buttons only |
 | `select_trigger` | Multi-stage target selection for the action | Repeatable; each block adds a new selection stage (`scope:target`, `scope:target_1`, ...) |
+| `payer` / `payee` | Who pays and who receives the price | Default: actor pays, nobody receives. Use `scope:recipient` or a scripted country to route payment |
+| `ai_prerequisite` | Cheap per-country early-out before full AI evaluation | Only `scope:actor` is available — use for tag/government checks, not target iteration |
+| `show_message` / `should_execute_price` | Debug/test flags to suppress notifications or price payment | Useful when wiring up tooltip-only actions or during development |
 | `source_flags` | Narrows the candidate list for performance | Always set `neighbor`, `border`, or other flags where possible to avoid iterating all countries |
 
 ## Modding Notes
 - **File organisation:** vanilla groups related interactions by theme (estates, IO, religion, economy). There is no technical requirement; interaction IDs must be globally unique.
 - **`type = diplomacy`** actions have `scope:actor` (initiator) and `scope:recipient` (target country) available throughout. `scope:target` and `scope:target_1`+ are populated by `select_trigger` stages.
 - **`type = subject`** actions set `scope:actor` to the overlord and `scope:recipient` to the subject. The subject is pre-selected by the game, not by a `select_trigger`.
-- **`diplo_chance` factors are engine tags**, not script. The full list is in `readme.txt` (100+ factors). Unrecognised tags are silently ignored — always check against the documented list.
+- **`diplo_chance` factors are engine tags**, not script. The full list is in `readme.txt` (100+ factors). Unrecognised tags are silently ignored — always check against the list in `readme.txt`.
 - **`ai_tick = never`** permanently disables AI use without removing the action from the player's UI. Use this for player-only interactions or actions that are managed by code-side AI logic.
 - **`diplomatic_cost`** is a different concept from `price`. It draws from spy network points, trust, or favors rather than gold/manpower. The cost type is defined in `diplomatic_costs/` and can have its own triggers and tooltip.
-- **`cooldown.type`** acts as a shared key. Two different interactions with the same `type` tag share one cooldown counter — useful for preventing rapid cycling through related actions.
+- **`cooldown.type`** acts as a shared key. Two different interactions with the same `type` tag share one cooldown counter — useful for preventing rapid sequential use of related actions.
+- **`ai_prerequisite`** is evaluated before any target iteration. Use it for cheap country-level checks (tag, government type, at-war status) to avoid running the full AI evaluation on ineligible actors.
+- **`payer` / `payee`** default to actor and nobody respectively. To route gold from the actor to the recipient, set `payee = { scope:recipient = { ... } }`. Both fields accept arbitrary script — they can point to estates, IOs, or any country scope.
 - **`interaction_source_list`** runs as a script effect to populate the candidate list. It is evaluated per actor–recipient pair, so it can be expensive in AI context; use `ai_interaction_source_list` for a cheaper AI-specific override.
 - **`source_flags`** such as `neighbor`, `border`, `subjects`, `atwar` dramatically reduce the candidate pool before `visible`/`enabled` triggers run. Always provide one for country-targeting interactions.
 
@@ -136,8 +141,9 @@ enforce_religion = {
     type     = subject
     category = CATEGORY_SUBJECT_ACTIONS
 
-    potential = { }    # visible to all overlords
-    allow     = { }    # no additional declaration checks beyond the select_trigger
+    # Empty blocks are shown here for clarity; in practice they are omitted when there are no conditions.
+    potential = { }
+    allow     = { }
 
     select_trigger = {
         looking_for_a = country
@@ -165,6 +171,7 @@ enforce_religion = {
     }
 
     ai_will_do = {
+        # Base score is 0 unless explicitly set. This adds 10 when the overlord is at peace.
         if = {
             limit = { scope:actor = { at_war = no } }
             add = { value = 10 }
