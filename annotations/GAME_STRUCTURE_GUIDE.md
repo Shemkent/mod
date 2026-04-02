@@ -63,16 +63,16 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 | `in_game/common/unit_formation_preference/` | unit_types | unmapped |
 | `in_game/common/levies/` | levies | unmapped |
 | `in_game/common/recruitment_method/` | levies | unmapped |
-| `in_game/common/wargoals/` | wargoals | stub |
-| `in_game/common/casus_belli/` | casus_belli | stub |
-| `in_game/common/peace_treaties/` | wargoals | unmapped |
-| `in_game/common/join_war_rules/` | wargoals | unmapped |
+| `in_game/common/wargoals/` | wargoals | annotated |
+| `in_game/common/casus_belli/` | casus_belli | annotated |
+| `in_game/common/peace_treaties/` | wargoals | annotated |
+| `in_game/common/join_war_rules/` | wargoals | annotated |
 | `in_game/common/subject_military_stances/` | subject_types | unmapped |
 
 ### Diplomacy & International
 | Folder | Likely System | Stage |
 |---|---|---|
-| `in_game/common/subject_types/` | subject_types | stub |
+| `in_game/common/subject_types/` | subject_types | annotated |
 | `in_game/common/international_organizations/` | international_organizations | unmapped |
 | `in_game/common/international_organization_payments/` | international_organizations | unmapped |
 | `in_game/common/international_organization_land_ownership_rules/` | international_organizations | unmapped |
@@ -231,7 +231,7 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 | Advances | [advances.md](advances.md) | stub |
 | Auto Modifiers | [auto_modifiers.md](auto_modifiers.md) | stub |
 | Buildings | [buildings.md](buildings.md) | stub |
-| Casus Belli | [casus_belli.md](casus_belli.md) | stub |
+| Casus Belli | [casus_belli.md](casus_belli.md) | complete |
 | Character Interactions | [character_interactions.md](character_interactions.md) | stub |
 | Disasters | [disasters.md](disasters.md) | stub |
 | Government Reforms | [government_reforms.md](government_reforms.md) | stub |
@@ -245,8 +245,8 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 | Scripted Effects | [scripted_effects.md](scripted_effects.md) | stub |
 | Scripted Triggers | [scripted_triggers.md](scripted_triggers.md) | stub |
 | Static Modifiers | [static_modifiers.md](static_modifiers.md) | stub |
-| Subject Types | [subject_types.md](subject_types.md) | stub |
+| Subject Types | [subject_types.md](subject_types.md) | complete |
 | Technologies | [technologies.md](technologies.md) | stub |
 | Traits | [traits.md](traits.md) | stub |
 | Unit Types | [unit_types.md](unit_types.md) | stub |
-| War Goals | [wargoals.md](wargoals.md) | stub |
+| War Goals | [wargoals.md](wargoals.md) | complete |

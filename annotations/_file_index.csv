@@ -41,3 +41,12 @@ in_game/common/estate_privileges/[8 files — see estate_privileges/ folder],est
 in_game/common/scripted_effects/[14 files — see scripted_effects/ folder],scripted_effects,annotated,1.1.10
 in_game/common/scripted_triggers/[22 files — see scripted_triggers/ folder],scripted_triggers,annotated,1.1.10
 in_game/common/scripted_modifiers/scripted_modifiers.info,scripted_modifiers,annotated,1.1.10
+in_game/common/casus_belli/[60+ files — see casus_belli/ folder],casus_belli,annotated,1.1.10
+in_game/common/wargoals/00_default.txt,wargoals,annotated,1.1.10
+in_game/common/wargoals/readme.txt,wargoals,annotated,1.1.10
+in_game/common/peace_treaties/[50+ files — see peace_treaties/ folder],wargoals,annotated,1.1.10
+in_game/common/peace_treaties/readme.txt,wargoals,annotated,1.1.10
+in_game/common/join_war_rules/readme.txt,wargoals,annotated,1.1.10
+in_game/common/join_war_rules/teu_crusade.txt,wargoals,annotated,1.1.10
+in_game/common/subject_types/[16 files — see subject_types/ folder],subject_types,annotated,1.1.10
+in_game/common/subject_types/readme.txt,subject_types,annotated,1.1.10

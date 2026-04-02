@@ -1,4 +1,140 @@
 # War Goals
-**Stage:** stub
-**Keywords:**
+**Stage:** complete
+**Keywords:** war_goal_type, wargoal, take_province, superiority, take_capital, take_country, take_border, independence, naval_superiority, enforce_military_access, defend_capital, ticking_war_score, conquer_cost, subjugate_cost, antagonism, allowed_locations, allowed_subjugation, peace_treaty
 
+> **System type: Gameplay**
+
+## Overview
+War goals define what a war is actually fought for and what can be demanded in the peace deal. Each war goal has a hardcoded `type` that determines the broad category of peace options available (province seizure, total subjugation, humiliation, etc.), then overlays script-controlled costs, restrictions, and call-in rules on top. War goals are referenced by casus belli definitions via `war_goal_type`. Peace treaty scripts (in `peace_treaties/`) extend the system by defining additional non-territorial demands that can be appended to any peace deal. Join-war rules (in `join_war_rules/`) allow modders to block specific countries from joining as allies under scripted conditions.
+
+## Vanilla File Locations
+- `in_game/common/wargoals/00_default.txt` — all war goal definitions (one file, ~70 entries)
+- `in_game/common/wargoals/readme.txt` — field documentation
+- `in_game/common/peace_treaties/` — scripted peace treaty demands (~50 files)
+- `in_game/common/peace_treaties/readme.txt` — field documentation
+- `in_game/common/join_war_rules/` — ally join restrictions (`readme.txt` + `teu_crusade.txt`)
+- Full file list in `_file_index.csv`.
+
+## Block Structure
+
+### War Goal
+```pdx
+<wargoal_id> = {
+    type = <hardcoded_type>             # see War Goal Types below
+    war_name = "LOC_KEY"                # overrides default war name localisation
+    war_name_is_country_order_agnostic = yes   # ENG v FRA = FRA v ENG for naming
+
+    allow = { <trigger> }              # extra conditions for the war goal to apply
+
+    attacker = {
+        call_in_overlord  = yes/no     # does attacker's overlord auto-join?
+        call_in_subjects  = yes/no     # do attacker's subjects auto-join?
+        conquer_cost      = <float>    # multiplier on warscore cost of taking locations
+        subjugate_cost    = <float>    # multiplier on warscore cost of subjugation
+        antagonism        = <float>    # multiplier on total antagonism generated
+        allowed_locations  = { <trigger> }   # which locations the attacker may claim
+        allowed_subjugation = { <trigger> }  # whether subjugation is available at all
+    }
+    defender = {
+        # same fields as attacker, applied to the defending side
+    }
+
+    ticking_war_score = <float>        # warscore change per month for the leading side
+}
+```
+
+### War Goal Types
+| Type | What it represents |
+|---|---|
+| `take_province` | Seize specific provinces |
+| `take_capital` | Seize or subjugate the enemy capital / whole country |
+| `take_country` | Annex the entire enemy country |
+| `take_border` | Take border provinces |
+| `superiority` | Humiliation / prestige / misc demands; no automatic land claims |
+| `naval_superiority` | Naval humiliation |
+| `independence` | Independence war for a subject |
+| `defend_capital` | Purely defensive goal |
+| `enforce_military_access` | Demand military access |
+| `destroy_army` | Destroy enemy army (Japanese civil war types) |
+
+### Peace Treaty (scripted demand)
+```pdx
+<treaty_id> = {
+    potential = { <trigger> }       # scope:winner, scope:loser, scope:war, scope:target
+    allow    = { <trigger> }
+    effect   = { <effect> }         # what actually happens when accepted
+
+    # Optional
+    blocks_full_annexation   = yes
+    collate_targets          = yes    # targets pooled across all givers
+    are_targets_exclusive    = yes    # cannot combine with land cession
+    category = country/location/province/area
+    cost     = { <script value> }   # warscore cost
+    base_antagonism = { <script value> }
+    antagonism_type = <bias_type>
+    ai_desire = { <script value> }  # how much the loser wants to accept
+
+    select_trigger = {              # multi-stage target selection UI
+        looking_for_a = <type>
+        source = actor/recipient/target/world
+        # ... (see readme.txt for full options)
+    }
+    custom_tags    = { tag_a }
+    show_tags_in_ui = yes
+}
+```
+
+### Join War Rule
+```pdx
+<rule_id> = {
+    join_war_disabled_trigger = {
+        # root = joining country
+        # scope:war = the war
+        # scope:first_leader / scope:second_leader = side leaders
+        <trigger>
+    }
+}
+```
+
+## Key Fields Reference
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `type` | Hardcoded war goal category | Determines base peace deal template; must be one of the 10 hardcoded types |
+| `conquer_cost` | Warscore cost multiplier for taking land | 1.0 = normal cost; <1 = cheaper; >1 = more expensive |
+| `subjugate_cost` | Warscore cost multiplier for subjugation | Distinct from `conquer_cost`; set to high values to block subjugation |
+| `antagonism` | Multiplier on antagonism generated by the peace deal | 0 disables antagonism for that side |
+| `allowed_locations` | Trigger per location restricting which provinces can be taken | Root = location; use `scope:winner`/`scope:loser`/`scope:war` |
+| `allowed_subjugation` | Trigger controlling whether subjugation is available | `always = no` fully blocks it |
+| `ticking_war_score` | Monthly warscore shift (default 1) | 0 disables ticking; higher values make wars resolve faster |
+| `war_name` | Override for the conflict's displayed name | Uses localisation key; `#uses second` comments show which country name is used |
+| `call_in_overlord` | Whether the side's overlord is called in automatically | Defaults to yes for most types |
+
+## Modding Notes
+- **All war goals live in one file** (`00_default.txt`). New entries can be appended; IDs must be globally unique.
+- **War goal types are hardcoded** — the `type =` value cannot be invented; only the 10 engine types are valid.
+- **`conquer_cost` and `subjugate_cost` are multipliers, not flat costs.** Setting `conquer_cost = 10.0` effectively blocks land seizure without using `allowed_locations = { always = no }`.
+- **`allowed_locations` runs per-location** during peace negotiations. Expensive iterative triggers here will affect performance on large empires. Use region checks rather than iterating owned locations.
+- **Peace treaties are entirely separate from war goals.** War goals determine what automatic land can be taken; peace treaties are scripted extra demands (force-convert, humiliate, steal maps, etc.) selectable in the peace deal UI on top of the war goal.
+- **`blocks_full_annexation`** on a peace treaty prevents the loser from being fully annexed — useful for treaties that break a union or grant independence but leave the loser intact.
+- **Join war rules only block allies, not the direct belligerents.** They are evaluated when a country tries to join an existing war on one side.
+- **`ticking_war_score = 0.5`** is the vanilla default for most CBs. Setting it to `0` makes warscore purely battle-driven.
+
+## Example
+`conquer_province` war goal — the standard territorial claim used by `cb_conquer_province`:
+
+```pdx
+conquer_province = {
+    type = take_province
+
+    attacker = {
+        conquer_cost  = 0.75    # 25% discount vs default
+        subjugate_cost = 0.75
+    }
+    defender = {
+        # defender can also take land at the peace table (empty = default costs)
+    }
+    ticking_war_score = 0.5     # 0.5 per month for the winning side
+}
+```
+
+Contrast with `fabricated_conquer_province` which uses `conquer_cost = 1.3` and `antagonism = 1.3` to penalise fabricated claims, and `humiliate` which uses `conquer_cost = 10.0` to make land seizure prohibitively expensive, effectively forcing a prestige-only peace.
