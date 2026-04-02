@@ -41,3 +41,26 @@ in_game/common/estate_privileges/[8 files — see estate_privileges/ folder],est
 in_game/common/scripted_effects/[14 files — see scripted_effects/ folder],scripted_effects,annotated,1.1.10
 in_game/common/scripted_triggers/[22 files — see scripted_triggers/ folder],scripted_triggers,annotated,1.1.10
 in_game/common/scripted_modifiers/scripted_modifiers.info,scripted_modifiers,annotated,1.1.10
+in_game/common/casus_belli/[60+ files — see casus_belli/ folder],casus_belli,annotated,1.1.10
+in_game/common/wargoals/00_default.txt,wargoals,annotated,1.1.10
+in_game/common/wargoals/readme.txt,wargoals,annotated,1.1.10
+in_game/common/peace_treaties/[50+ files — see peace_treaties/ folder],wargoals,annotated,1.1.10
+in_game/common/peace_treaties/readme.txt,wargoals,annotated,1.1.10
+in_game/common/join_war_rules/readme.txt,wargoals,annotated,1.1.10
+in_game/common/join_war_rules/teu_crusade.txt,wargoals,annotated,1.1.10
+in_game/common/subject_types/[16 files — see subject_types/ folder],subject_types,annotated,1.1.10
+in_game/common/subject_types/readme.txt,subject_types,annotated,1.1.10
+in_game/common/international_organizations/[35+ files — see international_organizations/ folder],international_organizations,annotated,1.1.10
+in_game/common/international_organizations/readme.txt,international_organizations,annotated,1.1.10
+in_game/common/international_organization_payments/[6 files — see international_organization_payments/ folder],international_organizations,annotated,1.1.10
+in_game/common/international_organization_payments/readme.txt,international_organizations,annotated,1.1.10
+in_game/common/international_organization_land_ownership_rules/[8 files — see folder],international_organizations,annotated,1.1.10
+in_game/common/international_organization_land_ownership_rules/readme.txt,international_organizations,annotated,1.1.10
+in_game/common/international_organization_special_statuses/[10 files — see folder],international_organizations,annotated,1.1.10
+in_game/common/international_organization_special_statuses/readme.txt,international_organizations,annotated,1.1.10
+in_game/common/country_interactions/[70+ files — see country_interactions/ folder],country_interactions,annotated,1.1.10
+in_game/common/country_interactions/readme.txt,country_interactions,annotated,1.1.10
+in_game/common/diplomatic_costs/[see diplomatic_costs/ folder],country_interactions,annotated,1.1.10
+in_game/common/insults/[see insults/ folder],country_interactions,annotated,1.1.10
+in_game/common/generic_actions/[120+ files — see generic_actions/ folder],generic_actions,annotated,1.1.10
+in_game/common/generic_actions/readme.txt,generic_actions,annotated,1.1.10
