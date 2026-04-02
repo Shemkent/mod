@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Bash(gh pr:*)"
+      "Bash(gh pr:*)",
+      "Bash(xargs -I{} wc -c \"C:/Users/Jiahang Ｗu/.claude/projects/C--Program-Files--x86--Steam-steamapps-common-Europa-Universalis-V-game/memory/{}\")"
     ],
     "defaultMode": "bypassPermissions"
   }

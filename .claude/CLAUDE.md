@@ -1,26 +1,27 @@
-# EU5 Modding Project Guidelines
+# EU5 Modding Project
+**Game version:** 1.1.10 — update when game updates, re-check affected annotations.
 
-## Game Version
-Current: **1.1.10**
-Update this line when the game updates, then re-check affected annotations.
+## Structure
+- `annotations/` — vanilla system references (read-only)
+- `mod/` — one folder per mod
+- Git tracks only `annotations/` and `mod/`
 
-## Project Structure
-- `annotations/` — Reference guides for vanilla game systems (read-only reference)
-- `mod/` — All mods live here, one folder per mod
-- Git tracks only `annotations/` and `mod/`; all game files are ignored
+## Branches
+- `main` — stable
+- `vanilla-annotation` — annotation work; PR to main when complete
+- `mod-dev` — mod development
 
-## Git & Branches
-- `main` — stable scaffolding only
-- `vanilla-annotation` — annotation work; PR to main when a system is fully documented
-- `mod-dev` — active mod development
+## Mod conventions
+- Mirror EU5 paths: `in_game/common/` and `main_menu/common/`
+- Prefix mod files with a short mod ID (e.g. `BPW_country.txt`)
+- Read `.metadata/README.md` before touching any mod files
 
-## Mod File Conventions
-- Mod files mirror EU5 standard: `in_game/common/` and `main_menu/common/`
-- Prefix mod-specific files with a short mod identifier (e.g. `BPW_country.txt`)
-- In-file comments are encouraged for complex or non-obvious changes
-- Commit frequently with descriptive messages
+## Agents
+- **Annotation work:** spawn `annotator`, then `reviewer` on the output
+- **Mod work:** spawn `modder`
 
-## Agent Routing
-- **Annotation work** (`vanilla-annotation` branch): spawn the `annotator` agent for each system. After it completes, spawn the `reviewer` agent on the written `.md` file.
-- **Mod work** (`mod-dev` branch): spawn the `modder` agent for mod implementation tasks.
-- **Writing review**: the `reviewer` agent checks annotation prose for conciseness, clarity, and consistency. It does not check technical accuracy.
+## Memory
+Do not write new files to the user memory directory (`~/.claude/projects/.../memory/`). The only permitted file there is `feedback_commits.md`. Project knowledge lives in `CLAUDE.md`, `agents/`, and `annotations/`.
+
+## Completeness criteria
+An annotation is `complete` when: all major fields documented, at least one example, all source files marked `annotated` in `_file_index.csv`, `GAME_STRUCTURE_GUIDE.md` entry links to the annotation.
