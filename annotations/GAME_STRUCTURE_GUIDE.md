@@ -132,16 +132,16 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 ### Religion & Culture
 | Folder | Likely System | Stage |
 |---|---|---|
-| `in_game/common/religions/` | religions | stub |
-| `in_game/common/religion_groups/` | religions | unmapped |
-| `in_game/common/religious_aspects/` | religions | unmapped |
-| `in_game/common/religious_factions/` | religions | unmapped |
-| `in_game/common/religious_figures/` | religions | unmapped |
-| `in_game/common/religious_focuses/` | religions | unmapped |
-| `in_game/common/religious_schools/` | religions | unmapped |
-| `in_game/common/gods/` | religions | unmapped |
-| `in_game/common/holy_site_types/` | religions | unmapped |
-| `in_game/common/holy_sites/` | religions | unmapped |
+| `in_game/common/religions/` | religions | annotated |
+| `in_game/common/religion_groups/` | religions | annotated |
+| `in_game/common/religious_aspects/` | religious_aspects | annotated |
+| `in_game/common/religious_factions/` | religious_schools | annotated |
+| `in_game/common/religious_figures/` | religious_schools | annotated |
+| `in_game/common/religious_focuses/` | religious_focuses | annotated |
+| `in_game/common/religious_schools/` | religious_schools | annotated |
+| `in_game/common/gods/` | gods | annotated |
+| `in_game/common/holy_site_types/` | holy_sites | annotated |
+| `in_game/common/holy_sites/` | holy_sites | annotated |
 | `in_game/common/avatars/` | avatars | complete |
 | `in_game/common/culture_groups/` | cultures | annotated |
 | `in_game/common/cultures/` | cultures | annotated |
@@ -241,7 +241,12 @@ Alert descriptions, attribute columns, artist types & work, insults, death reaso
 | Modifiers | [modifiers.md](modifiers.md) | stub |
 | Policies | [policies.md](policies.md) | complete |
 | Production Methods | [production_methods.md](production_methods.md) | stub |
-| Religions | [religions.md](religions.md) | stub |
+| Religions | [religions.md](religions.md) | complete |
+| Religious Aspects | [religious_aspects.md](religious_aspects.md) | complete |
+| Holy Sites | [holy_sites.md](holy_sites.md) | complete |
+| Religious Focuses | [religious_focuses.md](religious_focuses.md) | complete |
+| Religious Schools | [religious_schools.md](religious_schools.md) | complete |
+| Gods | [gods.md](gods.md) | complete |
 | Scripted Effects | [scripted_effects.md](scripted_effects.md) | stub |
 | Scripted Triggers | [scripted_triggers.md](scripted_triggers.md) | stub |
 | Static Modifiers | [static_modifiers.md](static_modifiers.md) | stub |

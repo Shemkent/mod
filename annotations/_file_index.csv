@@ -96,3 +96,13 @@ in_game/common/languages/[53 files — see languages/ folder],languages,annotate
 in_game/common/language_families/00_language_families.txt,languages,annotated,1.1.10
 in_game/common/child_educations/00_default.txt,child_educations,annotated,1.1.10
 in_game/common/child_educations/readme.txt,child_educations,annotated,1.1.10
+in_game/common/religions/[29 files — see religions/ folder],religions,annotated,1.1.10
+in_game/common/religion_groups/00_default.txt,religions,annotated,1.1.10
+in_game/common/religious_aspects/[17 files — see religious_aspects/ folder],religious_aspects,annotated,1.1.10
+in_game/common/holy_sites/[16 files — see holy_sites/ folder],holy_sites,annotated,1.1.10
+in_game/common/holy_site_types/00_holy_site_types.txt,holy_sites,annotated,1.1.10
+in_game/common/religious_focuses/[2 files — see religious_focuses/ folder],religious_focuses,annotated,1.1.10
+in_game/common/religious_schools/[6 files — see religious_schools/ folder],religious_schools,annotated,1.1.10
+in_game/common/religious_figures/[2 files — see religious_figures/ folder],religious_schools,annotated,1.1.10
+in_game/common/religious_factions/[2 files — see religious_factions/ folder],religious_schools,annotated,1.1.10
+in_game/common/gods/[11 files — see gods/ folder],gods,annotated,1.1.10
