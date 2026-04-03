@@ -14,7 +14,7 @@ Three small religion sub-systems provide religion-specific character roles, phil
 ## Vanilla File Locations
 - `in_game/common/religious_schools/` — 6 `.txt` files by religion
 - `in_game/common/religious_figures/` — 2 `.txt` files
-- `in_game/common/religious_factions/` — 2 `.txt` files (+ readme)
+- `in_game/common/religious_factions/` — 1 `.txt` file (+ readme)
 - Full file list in `_file_index.csv`.
 
 ## Block Structures

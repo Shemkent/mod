@@ -5,10 +5,10 @@
 > **System type: Gameplay**
 
 ## Overview
-Religious aspects are optional doctrines or practices that countries can adopt for their religion. Each aspect applies a modifier block (country-level bonuses/penalties) and opinion effects with other aspects. Aspects are religion-scoped — each definition lists which religions can adopt it via one or more `religion` fields. Mutual incompatibility is enforced via `enabled` triggers that check whether conflicting aspects are already active. Vanilla ships ~17 files of aspects organized by tradition (common, catholic, protestant, etc.).
+Religious aspects are optional doctrines or practices that countries can adopt for their religion. Each aspect applies a modifier block (country-level bonuses/penalties) and opinion effects with other aspects. Aspects are religion-scoped — each definition lists which religions can adopt it via one or more `religion` fields. Mutual incompatibility is enforced via `enabled` triggers that check whether conflicting aspects are already active. Vanilla ships ~16 files of aspects organized by tradition (common, catholic, protestant, etc.).
 
 ## Vanilla File Locations
-- `in_game/common/religious_aspects/` — ~17 `.txt` files by tradition (+ `common.txt` for cross-tradition aspects)
+- `in_game/common/religious_aspects/` — ~16 `.txt` files by tradition (+ `common.txt` for cross-tradition aspects)
 - Full file list in `_file_index.csv`.
 
 ## Block Structure

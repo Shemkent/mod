@@ -5,10 +5,10 @@
 > **System type: Data/Reference**
 
 ## Overview
-Holy sites define specific locations that are sacred to one or more religions. Each site references a `type` (from `holy_site_types/`) that provides its modifier template, and an `importance` value (1–5) that scales those modifiers. The modifiers from the type definition are applied to the site's location, to the owning country, and/or proportionally based on whether the dominant religion and owner religion match the site's listed religions. Vanilla ships 16 holy site files (organized by religion) and 1 holy site types file with ~12 type definitions.
+Holy sites define specific locations that are sacred to one or more religions. Each site references a `type` (from `holy_site_types/`) that provides its modifier template, and an `importance` value (1–5) that scales those modifiers. The modifiers from the type definition are applied to the site's location, to the owning country, and/or proportionally based on whether the dominant religion and owner religion match the site's listed religions. Vanilla ships 15 holy site files (organized by religion) and 1 holy site types file with ~10 type definitions.
 
 ## Vanilla File Locations
-- `in_game/common/holy_sites/` — 16 `.txt` files by religion/tradition
+- `in_game/common/holy_sites/` — 15 `.txt` files by religion/tradition
 - `in_game/common/holy_site_types/00_holy_site_types.txt` — all site type modifier templates
 - Full file list in `_file_index.csv`.
 
@@ -61,6 +61,9 @@ Holy sites define specific locations that are sacred to one or more religions. E
 | `episcopal_see` | — | Religious icon power |
 | `orthodox_church_holy_site` | Clergy pop, prosperity, clergy literacy | Religious icon power |
 | `christian_holy_site` | Clergy pop, prosperity, control | Monthly religious influence |
+| `inti_holy_site` | (Inti-specific modifiers) | — |
+| `mayan_holy_site` | (Mayan-specific modifiers) | — |
+| `islam_holy_site` | (Islamic-specific modifiers) | — |
 
 ## Key Fields Reference
 | Field | Purpose | Key constraint |
@@ -79,7 +82,7 @@ Holy sites define specific locations that are sacred to one or more religions. E
 - **Adding a new site type** requires: a definition in `holy_site_types/`, localization, and at least one modifier block. Any of `location_modifier`, `country_modifier`, and `religion_modifier` can be omitted.
 - **`importance` scales all modifiers from the type** — it is a multiplier on the type's modifier values, not a simple tier. A type with `local_unrest = -0.05` at importance 3 grants `−0.15` unrest at the location.
 - **A site can be holy to multiple religions.** Jerusalem, for example, is listed under Catholic, Orthodox, and Muslim holy site files, each with their own site definition and type. Multiple definitions for the same location are valid — each religion's entry is independent.
-- **`religion_modifier`** is split 50/50 between dominant-religion match and owner-religion match. If neither matches, neither half applies. This allows sites to benefit countries whose religion isn't the dominant local faith.
+- **`religion_modifier`** is split 50/50 between dominant-religion match and owner-religion match per engine documentation, but no vanilla holy site type currently uses this block. It can be used in modded types; if neither condition matches, neither half applies.
 - **Cross-system:** holy sites interact with the `gods/` system (`god` field), the `avatars/` system, the location system (location IDs), and religion definitions (`religions` field). Site modifiers stack with `definition_modifier` from the religion and `religious_aspects` modifiers.
 
 ## Example

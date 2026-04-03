@@ -1,11 +1,11 @@
 # Religions
 **Stage:** complete
-**Keywords:** religion, religion_group, group, color, language, definition_modifier, opinions, tags, has_karma, has_purity, has_honor, max_sects, factions, religious_focuses, allow_slaves_of_same_group, convert_slaves_at_start
+**Keywords:** religion, religion_group, group, color, language, definition_modifier, opinions, tags, has_karma, has_purity, has_honor, max_sects, factions, religious_focuses, religious_school, allow_slaves_of_same_group, convert_slaves_at_start
 
 > **System type: Data/Reference**
 
 ## Overview
-Religion definitions assign each faith to a religion group, give it a map color and graphics tags, declare which mechanics it uses (`has_karma`, `has_purity`, `has_honor`), set its `definition_modifier` (passive country bonuses while the religion is held), and define opinion relationships with other religions. Religion groups are the organizational layer above individual religions — they control slavery mechanics and provide optional group-level modifiers. Religions also reference factions (`factions {}`) and religious focuses (`religious_focuses {}`). Vanilla ships ~29 religion files and 1 religion group file.
+Religion definitions assign each faith to a religion group, give it a map color and graphics tags, declare which mechanics it uses (`has_karma`, `has_purity`, `has_honor`), set its `definition_modifier` (passive country bonuses while the religion is held), and define opinion relationships with other religions. Religion groups are the organizational layer above individual religions — they control slavery mechanics and provide optional group-level modifiers. Religions also reference factions (`factions {}`), religious focuses (`religious_focuses {}`), and religious schools (`religious_school`). Vanilla ships ~29 religion files and 1 religion group file (`00_default.txt`, containing ~29 group definitions).
 
 ## Vanilla File Locations
 - `in_game/common/religions/` — ~29 `.txt` files (one or more religions per file, organized by tradition)
@@ -49,6 +49,18 @@ Religion definitions assign each faith to a religion group, give it a map color 
     religious_focuses = {
         <focus_id>      # research focuses available to countries of this religion
     }
+
+    # --- Religious school (optional; references an ID in religious_schools/) ---
+    religious_school = <school_id>    # philosophical/theological school available to this religion
+
+    # --- Additional faith-type-specific fields (selection) ---
+    has_religious_influence = yes        # enables religious influence resource
+    religious_aspects       = <int>      # number of adoptable religious aspects
+    enable                  = <date>     # date when this religion becomes available
+    custom_tags             = { ... }    # additional graphics/category tags
+    unique_names            = { ... }    # character name pool specific to this religion
+    # Many further flags exist for Catholic, Orthodox, and other faiths
+    # (has_cardinals, has_patriarchs, has_canonization, ai_wants_convert, needs_reform, etc.)
 }
 ```
 
@@ -79,6 +91,10 @@ Religion definitions assign each faith to a religion group, give it a map color 
 | `religious_focuses` | Research focus list | References IDs in `religious_focuses/`; each focus is an independent researchable doctrine |
 | `allow_slaves_of_same_group` (group) | Slavery restriction | `no` prevents enslaving pops of the same group (e.g. Christians cannot enslave Christians) |
 | `convert_slaves_at_start` (group) | Starting conversion | `yes` converts all owned slaves to the owner's religion at scenario start |
+| `religious_school` | Philosophical/theological school | Optional; references an ID in `religious_schools/`; used extensively by Muslim religions |
+| `has_religious_influence` | Enables religious influence resource | Boolean; most Christian religions set this to `yes`; absent means the resource is unavailable |
+| `religious_aspects` | Number of adoptable aspects | Integer; restricts how many aspects a country of this religion may hold simultaneously |
+| `enable` | Date when religion becomes available | Used by Protestant/Reform religions (e.g. `enable = 1517.10.31` for Lutheran) to gate appearance |
 | `modifier` (group) | Group-level country modifier | Applied to all countries in the group; stacks with `definition_modifier` on individual religions |
 
 ## Modding Notes
@@ -87,7 +103,8 @@ Religion definitions assign each faith to a religion group, give it a map color 
 - **`opinions`** entries are one-directional. An `enemy` entry from A to B does not create reciprocal enmity — add entries in both religion files for symmetric relationships.
 - **Mechanics flags** (`has_karma`, `has_purity`, `has_honor`) only enable the UI resource bar and related script functions. The actual karma/purity/honor gain/spend logic must be scripted in events, laws, and effects.
 - **`factions` and `religious_focuses`** are lists of IDs; the definitions live in `religious_factions/` and `religious_focuses/` respectively. A faction or focus not listed here is invisible to countries of this religion even if its own `potential` trigger passes.
-- **Religion groups are minimal** — most vanilla groups have only `color` and slavery flags. The `modifier` block is optional and used only where group-wide mechanics are needed (e.g. the Muslim group's `allow_rgo_slave_demand`).
+- **Religion groups** — most vanilla groups have `color`, slavery flags, and a `modifier` block with `allow_rgo_slave_demand = yes`. This pattern covers roughly two-thirds of all groups (folk religions, Muslim, and others). Only a handful (Christian, Buddhist, Dharmic, and close kin) omit `allow_rgo_slave_demand`. The `modifier` block is optional, but it is the majority pattern, not a rare exception.
+- **Slavery flags** (`allow_slaves_of_same_group`, `convert_slaves_at_start`) are optional with no documented engine default when absent — omitting them likely behaves as `no`. Several vanilla groups omit one or both fields, so always declare them explicitly when adding a new group.
 - **Cross-system:** religion IDs are referenced throughout EU5 — in estate triggers, culture opinions, holy sites, religious aspects, societal value modifiers, and country history files. Renaming a religion breaks all references silently.
 
 ## Example

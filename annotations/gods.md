@@ -16,12 +16,15 @@ Gods are religion-specific deities that countries can adopt, granting modifiers 
 <god_id> = {
     icon = <icon_key>    # UI icon for this deity
 
-    # --- Religion association (repeatable; use group OR religion, or both) ---
+    # --- Religion association (repeatable; group and religion blocks share the same structure) ---
     group = {
         group    = <religion_group_id>
         name_key = <localization_key>   # localized name for this religion's version of the god
     }
-    religion = <religion_id>           # alternative single-religion assignment
+    religion = {
+        religion = <religion_id>
+        name_key = <localization_key>   # localized name for this religion's version of the god
+    }
 
     # --- Availability ---
     potential = { <trigger> }   # root = country; controls UI visibility
@@ -53,17 +56,17 @@ Gods are religion-specific deities that countries can adopt, granting modifiers 
 | Field | Purpose | Key constraint |
 |---|---|---|
 | `group` (repeatable) | Associates god with a religion group + localized name | Multiple `group` blocks allow one god to be shared across faiths (e.g. the Abrahamic god) |
-| `religion` | Associates god with a single religion | Alternative to `group`; can be combined |
+| `religion` | Associates god with a single religion | Block structure identical to `group` (uses `religion` + `name_key` sub-fields); can be combined with `group` blocks |
 | `potential` | UI visibility trigger | Root = country |
 | `allow` | Adoption eligibility trigger | Root = country; shown but disabled if fails |
 | `on_activate` | Effect when adoption begins | Fires immediately when `add_god` is called |
-| `on_fully_activated` | Effect after time-gated delay | Only fires if `years`/`months`/`weeks`/`days` is set |
+| `on_fully_activated` | Effect when adoption reaches 100% | Fires immediately if no time delay is set; fires after the delay period if `years`/`months`/`weeks`/`days` is configured |
 | `on_deactivate` | Effect when god is removed | Fires when `remove_god` is called |
 | `country_modifier` | Country-level modifiers while god is active | Supports `scale` (script value multiplier) and `potential_trigger` (conditional application) |
-| `years`/`months`/`weeks`/`days` | Activation delay | If set, `on_fully_activated` fires only after this period; modifiers may also be gated |
+| `years`/`months`/`weeks`/`days` | Activation delay | Delays `on_fully_activated`; without a time delay, `on_fully_activated` fires immediately on adoption |
 
 ## Modding Notes
-- **Gods are added/removed via effects:** `add_god = god:<god_id>` and `remove_god = god:<god_id>`. These are called from events, laws, or generic actions.
+- **Gods are added/removed via effects:** `add_god = <god_id>` and `remove_god = <god_id>`. These are called from events, laws, or generic actions.
 - **A god can be shared across multiple religion groups** using multiple `group` blocks with different `name_key` values. The Abrahamic god in vanilla (`god = {}` in `common.txt`) is shared between Christian, Jewish, and Muslim groups with different localized names.
 - **`country_modifier` supports `scale` and `potential_trigger`** for conditional or scaled modifier application. The `scale` field takes a script value; the modifier's numeric values are multiplied by the scale.
 - **Time-gated activation** (`years`/`months`/`weeks`/`days`) delays `on_fully_activated`. Use this for gradual conversion or adoption mechanics where immediate full effect is not desired.
