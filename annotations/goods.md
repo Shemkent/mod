@@ -5,7 +5,7 @@
 > **System type: Data/Reference**
 
 ## Overview
-Goods are the tradeable commodities that flow through EU5's market system. Each good definition sets its base market price, extraction method, food value, transport cost, and per-pop-type demand modifiers. Three companion systems extend this: `prices/` defines named cost bundles (gold, manpower, resources) referenced by actions and buildings; `goods_demand/` defines named demand bundles that attach recurring consumption to armies, buildings, and pops; and `goods_demand_category/` defines the display categories those bundles belong to. Together these four folders form the complete goods economy layer. Modders add new goods to introduce new trade commodities, adjust economic balance, or attach new resources to buildings and units.
+Goods are the tradeable commodities that flow through EU5's market system. Each good definition sets its base market price, extraction method, food value, transport cost, and per-pop-type demand modifiers. Three companion folders extend this: `prices/` defines named cost bundles (gold, manpower, resources) referenced by actions and buildings; `goods_demand/` defines named demand bundles that attach recurring consumption to armies, buildings, and pops; and `goods_demand_category/` defines the display categories those bundles belong to. Together these four folders form the complete goods economy layer. Modders add new goods to introduce new trade commodities, adjust economic balance, or attach new resources to buildings and units.
 
 ## Vanilla File Locations
 - `in_game/common/goods/` — goods definitions split by type (5 files + readme)
@@ -57,12 +57,6 @@ Goods are the tradeable commodities that flow through EU5's market system. Each 
         <pop_type_id>  = <float>    # multiplies demand for a specific pop type
     }
 
-    # --- Wealth thresholds ---
-    development_threshold = <int>       # minimum development before this good appears
-    wealth_impact_threshold = {
-        all = <float>                   # wealth level at which pop demand starts scaling
-    }
-
     # --- Tagging ---
     custom_tags = { <strings> }         # tested via good_has_custom_tag trigger
 }
@@ -112,9 +106,27 @@ Goods are the tradeable commodities that flow through EU5's market system. Each 
 ### Goods Demand Category
 ```pdx
 <category_id> = {
-    display = integer/pop   # how quantities are displayed in the UI
+    display = integer/pop   # optional; controls how quantities display in UI; omit for default unit display
 }
 ```
+
+**Vanilla demand category IDs** (from `goods_demand_category/00_default.txt`):
+
+| Category ID | `display` | Engine use |
+|---|---|---|
+| `regiment_construction` | (none) | Goods consumed when recruiting a regiment |
+| `regiment_maintenance` | (none) | Goods consumed monthly to maintain regiments |
+| `ship_construction` | (none) | Goods consumed when building a ship |
+| `ship_maintenance` | (none) | Goods consumed monthly to maintain ships |
+| `building_construction` | `integer` | Goods consumed when constructing a building |
+| `building_maintenance` | `integer` | Goods consumed monthly to maintain buildings |
+| `guild_input` | (none) | Input goods for guild production |
+| `workshop_input` | (none) | Input goods for workshop production |
+| `manufactory_input` | (none) | Input goods for manufactory production |
+| `mills_input` | (none) | Input goods for mills production |
+| `government_activities` | `integer` | Goods consumed by government operations |
+| `pop_needs` | `pop` | Goods consumed as pop needs |
+| `special_demands` | (none) | Miscellaneous demands (roads, colonial charters, slave RGOs) |
 
 ## Key Fields Reference
 | Field | Purpose | Key constraint |
@@ -124,21 +136,21 @@ Goods are the tradeable commodities that flow through EU5's market system. Each 
 | `default_market_price` | Base price before supply/demand adjustments | Higher prices increase tax revenue and trade value |
 | `transport_cost` | Multiplier on shipping cost | High values (2.0) make a good expensive to trade across distance |
 | `base_production` | Default RGO output without buildings | Most goods have 0 and rely entirely on buildings |
-| `food` | Food units provided per unit consumed | Only food-category goods should have non-zero values |
-| `demand_add` | Flat demand added per pop type per month | `all` applies to every pop type; specific pop types override `all` additively |
-| `demand_multiply` | Multiplier on demand for a pop category | `upper` applies to all upper-class pops; individual pop types also valid |
+| `food` | Food units provided per unit consumed | Non-zero only for goods intended as food sources; `category` has no `food` value — `03_food.txt` is a naming convention only |
+| `demand_add` | Flat demand added per pop type per month | `all` provides a baseline for every pop type simultaneously; specific pop type entries apply in addition to `all` |
+| `demand_multiply` | Multiplier on demand for a pop category | `upper` is a valid shorthand key (exact pop types it covers are not documented in the readme); individual pop type keys also valid |
 | `is_slaves` | Tags the good as a slave commodity | Only one vanilla good uses this; affects special demand mechanics |
 | `inflation = yes` | Production of this good generates inflation | Only applies to goods that represent money-substitutes (precious metals) |
-| `scaled_gold` in price | Cost scales as a fraction of a country stat | `scaled_gold = 5.0` = 5× the country's base gold value |
+| `scaled_gold` in price | Cost scales against a country-level gold value | The exact base the multiplier applies to is not documented in the readme |
 | `demand_id category` | Assigns the bundle to a display group | Must match an ID in `goods_demand_category/` |
 
 ## Modding Notes
 - **Adding a new good** requires entries in `goods/`, then referencing the good ID wherever it should be consumed (demand bundles, building inputs in production methods, good-specific triggers). The market system picks it up automatically from the goods folder.
-- **`demand_add` and `demand_multiply`** work together per pop type. Demand = (base + `demand_add`) × `demand_multiply`. The `all` key is a shorthand for all pop types simultaneously; specific pop type keys add on top of or override `all` for that type.
-- **`wealth_impact_threshold`** sets the wealth level above which pops start consuming this good. Below the threshold, demand is effectively zero for those pops. Used to gate luxury goods (porcelain, jewelry) behind wealth requirements.
+- **`demand_add` and `demand_multiply`** work together per pop type. Demand = (base + `demand_add`) × `demand_multiply` (inferred from field semantics; not explicitly documented in the readme). The `all` key provides a baseline for every pop type simultaneously; specific pop type entries apply in addition to `all`.
 - **Price definitions** (`prices/`) are referenced by actions, buildings, and other systems using `price:<price_id>`. They are not goods — they are named resource cost bundles. `scaled_gold` makes costs proportional to a country's economy, while flat `gold` is always the same amount.
 - **Goods demand bundles** (`goods_demand/`) are named lists of `<good_id> = <float>` pairs that the engine draws from automatically for armies, buildings, and pops. A bundle named `infantry_construction` is consumed when building infantry. The `category` field determines how it is grouped in the demand UI.
-- **`goods_demand_category/`** only defines display categories, not mechanics. Adding new categories requires corresponding UI entries to appear correctly.
+- **`goods_demand_category/`** only defines display categories, not mechanics. Most vanilla categories omit `display` entirely — only add `display = integer` or `display = pop` when you need specific quantity formatting. New categories require corresponding UI entries to appear correctly in the demand panel.
+- **`goods_demand/hardcoded.txt`** contains bundles with engine-reserved names (`road_maintenance`, `slave_rgo_demands`, `colonial_charter_maintenance`). Do not redefine these IDs in mod files; add new bundles in separate files instead.
 - **`inflation = yes`** on a good (e.g. gold ore) means that high production of that good inflates the economy. Do not set this on ordinary goods.
 - **`block_rgo_upgrade = yes`** prevents the RGO for this good from being expanded via scripted building. Useful for goods that should remain fixed-output (e.g. slaves, special resources).
 - **Cross-system:** good IDs are referenced in production methods (`buildings.md`), demand bundles, pop type demand scripts, and market triggers. Renaming a good breaks all these references silently.
@@ -164,7 +176,7 @@ horses = {
 **Price definition** — `embrace_institution` (scaled gold + stability cost):
 ```pdx
 embrace_institution = {
-    scaled_gold = 5.0    # cost = 5× country's base gold modifier
+    scaled_gold = 5.0    # cost scales against a country-level gold value (exact base undocumented)
     stability   = 50     # also costs stability points
 }
 ```
