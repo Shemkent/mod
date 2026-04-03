@@ -1,6 +1,6 @@
 # Heir Selections
 **Stage:** complete
-**Keywords:** heir_selection, succession_law, traverse_family_tree, include_ruler_siblings, through_female, allow_female, allow_male, allow_children, ignore_ruler, use_election, depth_first, sibling_score, potential, allowed_estates, heir_is_allowed, succession_effect, term_duration
+**Keywords:** heir_selection, succession_law, traverse_family_tree, include_ruler_siblings, through_female, allow_female, allow_male, allow_children, ignore_ruler, use_election, depth_first, sibling_score, potential, allowed_estates, heir_is_allowed, succession_effect, term_duration, is_a_praefecta
 
 > **System type: Gameplay**
 
@@ -74,7 +74,7 @@ Heir selection definitions scripted succession law rules — how a country deter
 | `traverse_family_tree` | Search the ruler's family for candidates | Set no for election-based systems |
 | `through_female` | Allow female-line succession | Distinct from `allow_female` — controls inheritance path, not candidate gender |
 | `allow_female` / `allow_male` | Candidate gender filter | Both can be yes (no gender restriction) |
-| `depth_first` | Candidate search order | Yes = closer relatives preferred; affects which branch of the family is checked first |
+| `depth_first` | Candidate search order | Yes = direct descendants fully checked before collateral relatives (siblings, cousins); No = breadth-first, all candidates at each generational distance before going deeper |
 | `include_ruler_siblings` | Add ruler's siblings to candidate pool | Required for most agnatic/cognatic succession types |
 | `sibling_score` | Rank candidate characters | Script value on the candidate; higher = more preferred; typically scores age, gender, fitness |
 | `heir_is_allowed` | Per-candidate trigger | Root = candidate character; false = excluded from pool entirely |
@@ -92,6 +92,8 @@ Heir selection definitions scripted succession law rules — how a country deter
 - **`allowed_estates`** is an estate whitelist. If omitted, all characters are eligible regardless of estate. This is used to restrict succession to noble families (`nobles_estate`) in hereditary monarchies.
 - **Election systems** (`use_election = yes`) still use `sibling_score` for AI voting weights. A high-scoring candidate will receive more AI votes.
 - **`succession_effect`** fires on every succession using this method. Use for one-time consequences like legitimacy changes or event triggers.
+- **`sibling_score` commonly uses an `if`/`else` pattern.** The `if = { limit = { exists = root } ... } else = { ... }` structure provides real scoring when `root` is a character context and fallback display values when `root` does not exist (used by the UI to show expected scores). Always include the `else` branch when using `exists = root` guards.
+- **`is_a_praefecta`** is a character trigger for legally-male characters (relevant to some cultures and government types). Include a bonus for `is_a_praefecta = yes` alongside the male-candidate bonus in any gender-biased succession system.
 - **Cross-system:** heir selections reference the estate system (`allowed_estates`), character stats and modifiers (`modifier:blocked_from_being_ruler`), and government types. The `potential` trigger often tests `government_type` or active laws to restrict selection methods to appropriate regimes.
 
 ## Example
@@ -119,7 +121,13 @@ cognatic_primogeniture = {
             limit = { exists = root }
             add = {
                 desc = "HEIR_SELECTION_MALE_DESC"
-                if = { limit = { is_female = no } value = 100 }
+                # Fires when root doesn't exist OR candidate is male
+                if = { limit = { OR = { not = { exists = root } is_female = no } } value = 100 }
+            }
+            add = {
+                desc = "HEIR_SELECTION_LEGALLY_MALE_DESC"
+                # is_a_praefecta = legally-male characters also score the male bonus
+                if = { limit = { is_a_praefecta = yes } value = 100 }
             }
             add = {
                 desc = "HEIR_SELECTION_OLDER_HEIR_DESC"
@@ -130,8 +138,15 @@ cognatic_primogeniture = {
                 if = { limit = { modifier:blocked_from_being_ruler = yes } value = -1000 }
             }
         }
+        else = {
+            # Fallback display values for UI rendering when root does not exist
+            add = { desc = "HEIR_SELECTION_MALE_DESC"             value = 100 }
+            add = { desc = "HEIR_SELECTION_LEGALLY_MALE_DESC"     value = 100 }
+            add = { desc = "HEIR_SELECTION_OLDER_HEIR_DESC"       value = 1 }
+            add = { desc = "HEIR_SELECTION_IS_UNSUITED_TO_RULE_DESC" value = -1000 }
+        }
     }
 }
 ```
 
-Male characters score +100 over females (preferred but not required), and older candidates score higher via `character_age`. Characters with the `blocked_from_being_ruler` modifier score −1000 and will not be selected unless no other candidates exist. The `allowed_estates = { nobles_estate }` restricts the pool to noble-estate characters only.
+Male characters (and legally-male characters via `is_a_praefecta`) score +100, and older candidates score higher via `character_age`. Characters with `blocked_from_being_ruler` score −1000 and will not be selected unless no alternatives exist. The `else` branch provides display-only fallback values for UI rendering when no `root` context exists. `allowed_estates = { nobles_estate }` restricts the pool to noble-estate characters only.

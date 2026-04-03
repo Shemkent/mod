@@ -53,6 +53,7 @@ Cultures define the ethnic and linguistic identities of pops, characters, and lo
 ### Culture Group Definition
 ```pdx
 <culture_group_id> = {
+    # All modifier blocks are optional; many vanilla groups are entirely empty (= {})
     country_modifier   = { <modifier block> }
     location_modifier  = { <modifier block> }
     character_modifier = { <modifier block> }
@@ -70,12 +71,12 @@ Cultures define the ethnic and linguistic identities of pops, characters, and lo
 | `country_modifier` | Modifiers when primary culture | Stacks with other country modifiers; empty block `= {}` is valid |
 | `location_modifier` | Modifiers when dominant culture | Applied per location where this is the dominant culture |
 | `character_modifier` | Modifiers when character's culture | Applied to characters with this culture |
-| `noun_keys` / `adjective_keys` | Procedural country name pools | Strings referencing localization keys for name generation |
+| `noun_keys` / `adjective_keys` | Procedural country name pools | Optional; strings referencing localization keys for name generation; many cultures omit these |
 
 ## Modding Notes
 - **Adding a new culture** requires an entry in `cultures/`, a `culture_groups` membership (at minimum one group), a `language` reference that exists in `languages/`, and localization. The engine loads all `.txt` files in the folder.
-- **Culture groups** provide additional modifiers that stack with culture-level modifiers. A culture belonging to multiple groups receives modifiers from all of them.
-- **`opinions`** entries are one-directional. `english = { irish = enemy }` does not automatically make Irish enemy of English — that requires a reciprocal entry in the Irish culture block.
+- **Culture groups** can provide additional modifiers that stack with culture-level modifiers. Modifier blocks are optional — many vanilla groups are empty (`= {}`). A culture belonging to multiple groups receives modifiers from all non-empty groups.
+- **`opinions`** entries are one-directional. An `enemy` entry for `irish` inside the `english` block does not automatically create a reciprocal `enemy` entry in the `irish` block — that requires an explicit entry there.
 - **`tags`** control portrait assets. Adding a new culture with a new ethnic appearance requires new portrait assets in `gfx/` with matching tag names. Without tags, the engine falls back to a default portrait set.
 - **`has_culture_group`** trigger syntax: `has_culture_group = culture_group:<group_id>`. Individual culture tests use `culture = culture:<culture_id>`.
 - **`language`** affects court language and market language mechanics. A culture whose language is the court language receives bonuses defined in the societal values system (`court_language_is_market_language_importance_modifier`, etc.).

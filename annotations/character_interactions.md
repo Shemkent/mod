@@ -5,7 +5,7 @@
 > **System type: Gameplay**
 
 ## Overview
-Character interactions are the scripted button-driven actions players use to manage individual characters — executing, pardoning, appointing, marrying, promoting, banishing, or commissioning art. They share the same `select_trigger`, `price`, `allow`, `effect`, `ai_will_do`, and `cooldown` machinery as `country_interactions` and `generic_actions`, but operate in character scope: `scope:actor` is the acting country and `scope:recipient` / `scope:target` are characters. Three flags distinguish character interactions from other action systems: `on_other_nation`, `on_own_nation`, and `is_consort_action`.
+Character interactions are the scripted button-driven actions players use to manage individual characters — executing, pardoning, appointing, marrying, promoting, banishing, or commissioning art. They share the same `select_trigger`, `price`, `allow`, `effect`, `ai_will_do`, and `cooldown` machinery as `country_interactions` and `generic_actions` (though character interactions do not support `automation_tick` or `player_automated_category`), and operate in character scope: `scope:actor` is the acting country; characters land in `scope:recipient`, `scope:target`, etc., as set by `select_trigger`. Three flags distinguish character interactions from other action systems: `on_other_nation`, `on_own_nation`, and `is_consort_action`.
 
 ## Vanilla File Locations
 - `in_game/common/character_interactions/` — one `.txt` per interaction (~29 files + readme)
@@ -39,7 +39,9 @@ Character interactions are the scripted button-driven actions players use to man
         looking_for_a   = character/location/province/area/region/country/value/boolean
         target_flag     = <scope_name>     # default: target, target_1, target_2...
         source          = actor/recipient/target/target_1/.../world
+        source_ai_override = actor/recipient/target/target_1/.../target_4   # AI-only source override
         source_flags    = <flags>          # include_dead, include_any_present, etc.
+        source_flags_ai_override = <flags>   # AI-only source flag override
         source_global_list = <list_name>
         interaction_source_list    = { <effect> }
         ai_interaction_source_list = { <effect> }
@@ -68,6 +70,8 @@ Character interactions are the scripted button-driven actions players use to man
         min / max / step / default = { <script value> }
         map_mode   = <map_mode>
         map_color  = { <script color> }
+        only_color_selectable = yes/no
+        secondary_map_color = { <script color> }
     }
 
     # --- Eligibility ---
@@ -76,7 +80,7 @@ Character interactions are the scripted button-driven actions players use to man
 
     # --- AI ---
     ai_tick           = never/daily/monthly
-    ai_tick_frequency = { <script value> }   # every N ticks per country; root = country
+    ai_tick_frequency = <int or script value>   # every N ticks per country; can be bare integer (e.g. 120) or script block
     ai_will_do        = { <effect script> }  # scores the action for AI
 
     # --- Cooldown ---
@@ -99,7 +103,9 @@ Character interactions are the scripted button-driven actions players use to man
 | `potential` | Visibility trigger | Root = `scope:actor` (country); character is not yet in scope |
 | `allow` | Enablement trigger | Full character scopes available; `scope:recipient` / `scope:target` = characters |
 | `price` | Named price definition | Via `price:<price_id>` from `prices/` folder |
-| `ai_will_do` | AI scoring script (effect type) | Higher score = AI more likely to use; same mechanics as country_interactions |
+| `ai_will_do` | AI scoring script (uses effect-script syntax; produces a numeric score) | Higher score = AI more likely to use; same mechanics as country_interactions |
+| `should_execute_price` | Skip price payment | Set `no` for tooltip/testing actions that show costs without charging them |
+| `show_in_gui_list` | Auto-include in GUI action lists | Set `no` for interactions that appear only via custom widgets |
 | `cooldown.type` | Shared cooldown tag | Multiple interactions with the same type share one cooldown counter |
 
 ## Modding Notes
@@ -111,40 +117,70 @@ Character interactions are the scripted button-driven actions players use to man
 - **Cross-system:** character interactions reference `prices/`, character scope triggers, estate types, and cabinet positions. An interaction that appoints a character to a role requires that role to be defined in the government type or cabinet system.
 
 ## Example
-`banish_character` — removes a character from court:
+`abdicate` — ruler voluntarily steps down in favour of the heir:
 
 ```pdx
-banish_character = {
-    on_own_nation = yes
-    price = price:banish_character
+abdicate = {
+    message           = yes
+    is_consort_action = no
+    on_own_nation     = yes
 
-    potential = { }    # visible to all countries
+    price = price:abdicate_price
 
-    allow = {
-        scope:recipient = {
-            NOT = { is_ruler = yes }
-            NOT = { is_heir = yes }
+    price_modifier = {           # price reduced for older rulers (less resistance)
+        add = 1
+        if = {
+            limit = { scope:recipient ?= { age_in_years > 40 } }
+            subtract = {
+                desc = "CHAR_AGE_LABEL"
+                scope:recipient = {
+                    value    = age_in_years
+                    subtract = 40
+                    multiply = 0.02
+                }
+            }
         }
     }
 
-    ai_tick           = monthly
-    ai_tick_frequency = { value = 6 }
+    potential = { }              # always visible
 
-    ai_will_do = {
-        scope:recipient = {
-            add = { desc = "threat" value = character_threat_level }
+    allow = {
+        scope:actor = { has_heir = yes }
+    }
+
+    ai_tick           = daily
+    ai_tick_frequency = 120      # bare integer: check every 120 days
+
+    select_trigger = {
+        looking_for_a = character
+        source        = actor
+        target_flag   = recipient    # result goes into scope:recipient (not scope:target)
+        name          = "choose_character"
+        column        = { data = name }
+        visible  = { scope:actor = { ruler ?= root } }
+        enabled  = {
+            or = {
+                and = { is_female = yes; scope:actor = { heir ?= { is_adult = yes; is_female = no } } }
+                and = { total_abilities < 100; character_age > 60 }
+            }
         }
     }
 
     effect = {
-        scope:recipient = { banish_character = yes }
+        scope:actor = { set_new_ruler = heir }
     }
 
-    cooldown = {
-        type   = banish_character
-        months = 24
+    ai_will_do = {
+        add = {
+            desc  = "RULER_ABILITY"
+            scope:recipient = { subtract = total_abilities; multiply = 0.02 }
+        }
+        add = {
+            desc  = "HEIR_ABILITY"
+            scope:recipient = { add = total_abilities; multiply = 0.02 }
+        }
     }
 }
 ```
 
-`on_own_nation = yes` limits this to the acting country's own characters. `scope:recipient` is the character targeted via the default `select_trigger` (looking for a character on own nation). The AI evaluates monthly every 6 months.
+Key patterns to note: `target_flag = recipient` stores the selected character in `scope:recipient` rather than the default `scope:target`. `ai_tick_frequency = 120` is a bare integer (not a block). The `price_modifier` block reduces cost for older rulers. The AI abdicates when the heir's abilities outweigh the current ruler's — a positive score favours abdication.

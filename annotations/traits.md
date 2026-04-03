@@ -24,6 +24,8 @@ Traits are character-level modifiers that shape a ruler's, general's, admiral's,
 <trait_id> = {
     # --- Role ---
     category = ruler/general/admiral/artist/explorer/child/religious_figure
+    # Default: ruler (if omitted). The info template lists only five roles;
+    # child and religious_figure are additional vanilla categories not in the template.
     flavor   = personality/government_approach/interests/education   # UI color grouping
 
     # --- Eligibility ---
@@ -35,7 +37,7 @@ Traits are character-level modifiers that shape a ruler's, general's, admiral's,
 
     # --- Effect ---
     modifier = {
-        # Applied to the country/character while this character is in-role
+        # Applied to the country while this character is in-role (ruler traits are country-scope)
         global_estate_target_satisfaction = <scripted_constant>
         monthly_legitimacy = <float>
         monthly_republican_tradition = <float>
@@ -50,7 +52,9 @@ Traits are character-level modifiers that shape a ruler's, general's, admiral's,
 
     # --- Appearance probability ---
     chance = {
-        # MTTH-style script value; lower = more likely to appear
+        # MTTH (Mean Time To Happen) style script value.
+        # The value is the expected number of months before this trait appears randomly.
+        # Lower base months = more frequent random assignment.
         # root = character
         value = <base_months>
         # modify = { add = X limit = { ... } }
@@ -64,14 +68,14 @@ Defined in `trait_flavor/00_default.txt` as named color groups (rgb). All vanill
 | Flavor | Typical content |
 |---|---|
 | `personality` | Core character traits (just, cruel, tolerant, zealot, etc.) |
-| `government_approach` | Governance style (lawmaker, warmonger, etc.) |
+| `government_approach` | Governance and diplomatic disposition (tolerant, warmonger, etc.) |
 | `interests` | Passions (scholar, hunter, etc.) |
 | `education` | Education-outcome traits (military education, administrative education, etc.) |
 
 ## Key Fields Reference
 | Field | Purpose | Key constraint |
 |---|---|---|
-| `category` | Which character role this trait applies to | Modifiers only activate when the character is serving in that role |
+| `category` | Which character role this trait applies to | Defaults to `ruler` if omitted; modifiers only activate when the character is serving in that role |
 | `flavor` | Visual grouping | Must match an ID in `trait_flavor/`; unknown flavors render without color |
 | `allow` | Character eligibility trigger | Root = character; tested at assignment time, not re-enforced after |
 | `modifier` | Modifiers applied while character is in role | Uses country modifier namespace; `monthly_towards_*` pushes societal values |
@@ -92,7 +96,7 @@ Defined in `trait_flavor/00_default.txt` as named color groups (rgb). All vanill
 - **Trait modifiers apply only when the character is in the matching role.** A `general` trait on a character who is currently ruling does not grant its modifiers. When assigned to lead an army, the modifiers activate.
 - **`allow` is tested at assignment time, not re-enforced after.** If a character later loses the prerequisite stat or trait, the existing trait remains.
 - **Trait exclusivity** is enforced manually via `NOT = { has_trait = X }` in `allow`. The engine has no built-in mutual exclusion system.
-- **`monthly_towards_<side>`** in `modifier` pushes the country's societal value slider monthly while the character is in role. Use `societal_value_minor_monthly_move` or `societal_value_monthly_move` constants.
+- **`monthly_towards_<side>`** in `modifier` pushes the country's societal value slider monthly while the character is in role. Choose `societal_value_minor_monthly_move` for a subtle nudge or `societal_value_monthly_move` for a stronger push — both are named constants defined in static modifiers.
 - **Adding a new trait** is purely additive — define the block in any `.txt` file in `traits/`, add localization, and the trait is available for event assignment. All `.txt` files in the folder are loaded.
 - **`trait_flavor/`** defines only UI display (name + color). Adding a new flavor requires an entry there plus localization. Unknown flavor IDs render without color but do not error.
 - **`has_trait`** is the trigger to check for a trait in other scripts. Syntax: `has_trait = <trait_id>` (not `trait:<id>`).
