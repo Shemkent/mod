@@ -26,5 +26,12 @@
   {"from": "country_interactions", "to": "subject_types", "type": "references", "note": "type=subject interactions target subject countries"},
   {"from": "child_educations", "to": "traits", "type": "references", "note": "education outcomes grant traits"},
   {"from": "gods", "to": "avatars", "type": "references", "note": "gods optionally reference avatars"},
-  {"from": "societal_values", "to": "cultures", "type": "references", "note": "court_language modifiers reference culture/language"}
+  {"from": "societal_values", "to": "cultures", "type": "references", "note": "court_language modifiers reference culture/language"},
+  {"from": "scripted_lists", "to": "scripted_triggers", "type": "shared_mechanic", "note": "conditions block uses identical trigger syntax to scripted_triggers"},
+  {"from": "script_values", "to": "scripted_effects", "type": "shared_mechanic", "note": "inline formula syntax mirrors scripted_effect parameter blocks; both support $variable$ substitution"},
+  {"from": "on_action", "to": "scripted_effects", "type": "references", "note": "on_action effect blocks use scripted effects"},
+  {"from": "on_action", "to": "scripted_triggers", "type": "references", "note": "on_action trigger and weight_multiplier blocks use scripted triggers"},
+  {"from": "scripted_diplomatic_objectives", "to": "country_interactions", "type": "references", "note": "country_interactions block references country interaction keys"},
+  {"from": "scripted_diplomatic_objectives", "to": "international_organizations", "type": "references", "note": "vanilla objectives target IO membership and special statuses"},
+  {"from": "static_modifiers", "to": "auto_modifiers", "type": "shared_mechanic", "note": "both apply modifier fields to scoped entities; differ in activation mechanism (explicit push vs. automatic condition check)", "bidirectional": true}
 ]

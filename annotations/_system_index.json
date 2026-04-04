@@ -79,7 +79,7 @@
       "id": "advances",
       "label": "Advances",
       "annotation": "advances.md",
-      "stage": "stub",
+      "stage": "complete",
       "cluster": "tech_progression",
       "verified_version": "1.1.10",
       "summary": "The research tree of EU5 — discrete nodes a country researches to unlock content, gain modifiers, and gate buildings, laws, CBs, and reforms behind progression."
@@ -88,7 +88,7 @@
       "id": "auto_modifiers",
       "label": "Auto Modifiers",
       "annotation": "auto_modifiers.md",
-      "stage": "stub",
+      "stage": "complete",
       "cluster": "scripted_infrastructure",
       "verified_version": "1.1.10",
       "summary": "Persistent modifiers applied automatically to a scoped entity whenever their conditions are met, translating game state into ongoing mechanical effects."
@@ -97,7 +97,7 @@
       "id": "buildings",
       "label": "Buildings",
       "annotation": "buildings.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "economy_trade",
       "verified_version": "1.1.10",
       "summary": "Location-level constructs that employ pops, consume goods, and apply modifiers; defined in building_types/ and building_categories/."
@@ -142,7 +142,7 @@
       "id": "disasters",
       "label": "Disasters",
       "annotation": "disasters.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "tech_progression",
       "verified_version": "1.1.10",
       "summary": "Country-level crisis events that apply ongoing penalties and fire monthly events while active; only one can be active per country at a time."
@@ -151,7 +151,7 @@
       "id": "government_reforms",
       "label": "Government Reforms",
       "annotation": "government_reforms.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "government_politics",
       "verified_version": "1.1.10",
       "summary": "Optional modifiers and mechanics a country can adopt on top of its base government type; multiple reforms can be held simultaneously."
@@ -160,7 +160,7 @@
       "id": "government_types",
       "label": "Government Types",
       "annotation": "government_types.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "government_politics",
       "verified_version": "1.1.10",
       "summary": "Top-level classification of a country's ruling system, determining government power resource, heir selection methods, and available laws and reforms."
@@ -169,7 +169,7 @@
       "id": "laws",
       "label": "Laws",
       "annotation": "laws.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "government_politics",
       "verified_version": "1.1.10",
       "summary": "Named policy slots each holding one active policy; represent broad policy areas where switching costs a price and takes implementation time."
@@ -187,10 +187,10 @@
       "id": "modifiers",
       "label": "Modifiers",
       "annotation": "modifiers.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "scripted_infrastructure",
       "verified_version": "1.1.10",
-      "summary": "Umbrella concept covering inline, auto, scripted, and static modifier systems that apply numerical bonuses or penalties to scoped entities."
+      "summary": "Umbrella guide to EU5's modifier systems: inline, auto, scripted, and static — clarifies the four distinct systems and where to find documentation."
     },
     {
       "id": "policies",
@@ -205,7 +205,7 @@
       "id": "production_methods",
       "label": "Production Methods",
       "annotation": "production_methods.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "economy_trade",
       "verified_version": "1.1.10",
       "summary": "Goods consumption and production recipes for buildings, defining inputs and outputs as either named PM definitions or inline building blocks."
@@ -268,7 +268,7 @@
       "id": "scripted_effects",
       "label": "Scripted Effects",
       "annotation": "scripted_effects.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "scripted_infrastructure",
       "verified_version": "1.1.10",
       "summary": "Named, reusable effect blocks callable anywhere in script with optional parameterized arguments, eliminating repetition for complex effect logic."
@@ -277,7 +277,7 @@
       "id": "scripted_triggers",
       "label": "Scripted Triggers",
       "annotation": "scripted_triggers.md",
-      "stage": "stub",
+      "stage": "annotated",
       "cluster": "scripted_infrastructure",
       "verified_version": "1.1.10",
       "summary": "Named, reusable trigger blocks callable anywhere in script with optional parameterized arguments, mirroring the scripted_effects pattern."
@@ -364,6 +364,15 @@
       "summary": "Multi-country entities above bilateral diplomacy (HRE, Papacy, leagues, alliances) with membership rules, leader modifiers, parliaments, payments, and special statuses."
     },
     {
+      "id": "estates",
+      "label": "Estates",
+      "annotation": "estates.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Political factions within a country (nobles, clergy, burghers, etc.) with power, satisfaction, and opinion; estate privileges grant modifier blocks while active."
+    },
+    {
       "id": "goods",
       "label": "Goods",
       "annotation": "goods.md",
@@ -407,6 +416,78 @@
       "cluster": "characters_estates",
       "verified_version": "1.1.10",
       "summary": "Scripted succession law rules defining candidate filtering, scoring, and validation for determining the next ruler."
+    },
+    {
+      "id": "script_values",
+      "label": "Script Values",
+      "annotation": "script_values.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named constants and scoped math formulas referenceable anywhere a numeric argument is accepted; support arithmetic, conditionals, randomness, scope traversal, and list aggregation."
+    },
+    {
+      "id": "on_action",
+      "label": "On Actions",
+      "annotation": "on_action.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named engine-fired hooks that additively accumulate event lists, on-action chains, and inline effects across all files; the primary safe injection point for mods."
+    },
+    {
+      "id": "scripted_geography",
+      "label": "Scripted Geography",
+      "annotation": "scripted_geography.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named groupings of locations, areas, regions, and province definitions that expose iteration lists, membership tests, and country presence checks."
+    },
+    {
+      "id": "scripted_diplomatic_objectives",
+      "label": "Scripted Diplomatic Objectives",
+      "annotation": "scripted_diplomatic_objectives.md",
+      "stage": "complete",
+      "cluster": "ai",
+      "verified_version": "1.1.10",
+      "summary": "Named AI behaviour templates that instruct a country to persistently pursue a diplomatic strategy (improve, antagonise, destroy) toward a filtered set of target countries."
+    },
+    {
+      "id": "scripted_modifiers",
+      "label": "Scripted Modifiers",
+      "annotation": "scripted_modifiers.md",
+      "stage": "not applicable",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named reusable weight-modifier blocks for random_list and AI weighting; no vanilla definitions in v1.1.10."
+    },
+    {
+      "id": "static_modifiers",
+      "label": "Static Modifiers",
+      "annotation": "static_modifiers.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named modifier blocks applied explicitly to scoped entities by engine code or scripted effects, with optional decay and auto-removal on religion/culture change."
+    },
+    {
+      "id": "scripted_lists",
+      "label": "Scripted Lists",
+      "annotation": "scripted_lists.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named, filtered views of built-in scope iteration lists; define one block and the engine registers every_/any_/random_/ordered_ variants automatically."
+    },
+    {
+      "id": "scripted_rules",
+      "label": "Scripted Rules",
+      "annotation": "scripted_rules.md",
+      "stage": "not applicable",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Reserved system for named boolean rule overrides; folder exists but contains no vanilla definitions in v1.1.10."
     },
     {
       "id": "languages",

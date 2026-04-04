@@ -108,3 +108,37 @@ in_game/common/religious_factions/[2 files — see religious_factions/ folder],r
 in_game/common/gods/[11 files — see gods/ folder],gods,annotated,1.1.10
 annotations/_system_index.json,system_graph,annotated,1.1.10
 annotations/_system_edges.json,system_graph,annotated,1.1.10
+in_game/common/scripted_lists/character_lists.txt,scripted_lists,annotated,1.1.10
+in_game/common/scripted_lists/country_lists.txt,scripted_lists,annotated,1.1.10
+in_game/common/scripted_lists/religion_lists.txt,scripted_lists,annotated,1.1.10
+in_game/common/scripted_lists/scripted_lists.info,scripted_lists,annotated,1.1.10
+main_menu/common/scripted_lists/scripted_lists.info,scripted_lists,annotated,1.1.10
+in_game/common/scripted_rules/scripted_rules.info,scripted_rules,annotated,1.1.10
+in_game/common/script_values/_script_values.info,script_values,annotated,1.1.10
+in_game/common/script_values/define_values.txt,script_values,annotated,1.1.10
+in_game/common/script_values/diplomatic_values.txt,script_values,annotated,1.1.10
+in_game/common/script_values/research_values.txt,script_values,annotated,1.1.10
+in_game/common/script_values/unit_values.txt,script_values,annotated,1.1.10
+in_game/common/script_values/monthly_income.txt,script_values,annotated,1.1.10
+in_game/common/script_values/building_caps.txt,script_values,annotated,1.1.10
+in_game/common/script_values/[12 further files],script_values,annotated,1.1.10
+main_menu/common/script_values/default_values.txt,script_values,annotated,1.1.10
+in_game/common/on_action/_hardcoded.txt,on_action,annotated,1.1.10
+in_game/common/on_action/country_monthly.txt,on_action,annotated,1.1.10
+in_game/common/on_action/country_yearly.txt,on_action,annotated,1.1.10
+in_game/common/on_action/country_biyearly.txt,on_action,annotated,1.1.10
+in_game/common/on_action/country_four_yearly.txt,on_action,annotated,1.1.10
+in_game/common/on_action/character.txt,on_action,annotated,1.1.10
+in_game/common/on_action/character_death_pulses.txt,on_action,annotated,1.1.10
+in_game/common/on_action/[13 further files],on_action,annotated,1.1.10
+in_game/common/scripted_geography/00_event_scripted_geography.txt,scripted_geography,annotated,1.1.10
+in_game/common/scripted_geography/01_europe.txt,scripted_geography,annotated,1.1.10
+in_game/common/scripted_geography/scripted_geography.info,scripted_geography,annotated,1.1.10
+in_game/common/scripted_diplomatic_objectives/hre_emperorship.txt,scripted_diplomatic_objectives,annotated,1.1.10
+in_game/common/scripted_diplomatic_objectives/japanese_clan_spying.txt,scripted_diplomatic_objectives,annotated,1.1.10
+in_game/common/scripted_diplomatic_objectives/readme.txt,scripted_diplomatic_objectives,annotated,1.1.10
+in_game/common/scripted_modifiers/scripted_modifiers.info,scripted_modifiers,annotated,1.1.10
+main_menu/common/static_modifiers/country.txt,static_modifiers,annotated,1.1.10
+main_menu/common/static_modifiers/location.txt,static_modifiers,annotated,1.1.10
+main_menu/common/static_modifiers/character.txt,static_modifiers,annotated,1.1.10
+main_menu/common/static_modifiers/[14 further files],static_modifiers,annotated,1.1.10
