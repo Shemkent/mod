@@ -418,6 +418,69 @@
       "summary": "Scripted succession law rules defining candidate filtering, scoring, and validation for determining the next ruler."
     },
     {
+      "id": "scripted_relations",
+      "label": "Scripted Relations",
+      "annotation": "scripted_relations.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Defines all bilateral diplomatic relationships (alliance, guarantee, access, embargo, etc.) with directionality, war behaviour, monthly flows, AI weights, and lifecycle effects."
+    },
+    {
+      "id": "scripted_country_names",
+      "label": "Scripted Country Names",
+      "annotation": "scripted_country_names.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Conditional country name overrides triggered by simultaneous country, capital, and territory checks; used for colonial naming (New Spain, Jamaica, etc.)."
+    },
+    {
+      "id": "scripted_guis",
+      "label": "Scripted GUIs",
+      "annotation": "scripted_guis.md",
+      "stage": "not applicable",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Script-driven GUI button definitions with show/valid/effect/AI fields; no vanilla definitions in v1.1.10."
+    },
+    {
+      "id": "scriptable_hints",
+      "label": "Scriptable Hints",
+      "annotation": "scriptable_hints.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Context-sensitive advisor hints shown when priority triggers fire, with per-playstyle localisation tag variants; UI-only, no gameplay effects."
+    },
+    {
+      "id": "effect_localization",
+      "label": "Effect Localization",
+      "annotation": "effect_localization.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Maps effect names to tooltip localisation keys with pronoun (global/first/third) and tense (present/past) variants; no gameplay logic."
+    },
+    {
+      "id": "trigger_localization",
+      "label": "Trigger Localization",
+      "annotation": "trigger_localization.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Maps trigger names to tooltip localisation keys including pronoun variants, NOT forms, value-comparison operator specialisations, and any-trigger count/percent variants."
+    },
+    {
+      "id": "customizable_localization",
+      "label": "Customizable Localization",
+      "annotation": "customizable_localization.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Named inline loc functions called from localisation strings via [FunctionKey()]; return the first matching loc key from a trigger-gated cascade with a fallback."
+    },
+    {
       "id": "script_values",
       "label": "Script Values",
       "annotation": "script_values.md",

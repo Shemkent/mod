@@ -33,5 +33,10 @@
   {"from": "on_action", "to": "scripted_triggers", "type": "references", "note": "on_action trigger and weight_multiplier blocks use scripted triggers"},
   {"from": "scripted_diplomatic_objectives", "to": "country_interactions", "type": "references", "note": "country_interactions block references country interaction keys"},
   {"from": "scripted_diplomatic_objectives", "to": "international_organizations", "type": "references", "note": "vanilla objectives target IO membership and special statuses"},
-  {"from": "static_modifiers", "to": "auto_modifiers", "type": "shared_mechanic", "note": "both apply modifier fields to scoped entities; differ in activation mechanism (explicit push vs. automatic condition check)", "bidirectional": true}
+  {"from": "static_modifiers", "to": "auto_modifiers", "type": "shared_mechanic", "note": "both apply modifier fields to scoped entities; differ in activation mechanism (explicit push vs. automatic condition check)", "bidirectional": true},
+  {"from": "scripted_relations", "to": "country_interactions", "type": "references", "note": "relations are toggled on/off through country_interactions"},
+  {"from": "scripted_relations", "to": "scripted_diplomatic_objectives", "type": "references", "note": "scripted_diplomatic_objectives country_relations block references relation keys"},
+  {"from": "customizable_localization", "to": "laws", "type": "references", "note": "vanilla functions reference policy/law keys (GetOrderOfChivalry etc.)"},
+  {"from": "effect_localization", "to": "trigger_localization", "type": "shared_mechanic", "note": "identical pronoun/tense variant structure and fallback chaining", "bidirectional": true},
+  {"from": "scriptable_hints", "to": "alert_descriptions", "type": "shared_mechanic", "note": "sort_priority aligns with alert severity values"}
 ]

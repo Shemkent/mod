@@ -142,3 +142,18 @@ main_menu/common/static_modifiers/country.txt,static_modifiers,annotated,1.1.10
 main_menu/common/static_modifiers/location.txt,static_modifiers,annotated,1.1.10
 main_menu/common/static_modifiers/character.txt,static_modifiers,annotated,1.1.10
 main_menu/common/static_modifiers/[14 further files],static_modifiers,annotated,1.1.10
+in_game/common/scripted_relations/readme.txt,scripted_relations,annotated,1.1.10
+in_game/common/scripted_relations/alliance.txt,scripted_relations,annotated,1.1.10
+in_game/common/scripted_relations/[30 further files],scripted_relations,annotated,1.1.10
+in_game/common/scripted_country_names/00_default.txt,scripted_country_names,annotated,1.1.10
+in_game/common/scripted_guis/scripted_guis.info,scripted_guis,annotated,1.1.10
+in_game/common/scriptable_hints/____info.txt,scriptable_hints,annotated,1.1.10
+in_game/common/scriptable_hints/scripted_hints.txt,scriptable_hints,annotated,1.1.10
+in_game/common/effect_localization/__example.txt,effect_localization,annotated,1.1.10
+in_game/common/effect_localization/common_effects.txt,effect_localization,annotated,1.1.10
+in_game/common/effect_localization/[29 further files],effect_localization,annotated,1.1.10
+in_game/common/trigger_localization/_trigger_localization.info,trigger_localization,annotated,1.1.10
+in_game/common/trigger_localization/common_triggers.txt,trigger_localization,annotated,1.1.10
+in_game/common/trigger_localization/[39 further files],trigger_localization,annotated,1.1.10
+in_game/common/customizable_localization/00_customizable_localization.txt,customizable_localization,annotated,1.1.10
+in_game/common/customizable_localization/[24 further files],customizable_localization,annotated,1.1.10
