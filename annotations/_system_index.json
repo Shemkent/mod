@@ -97,7 +97,7 @@
       "id": "buildings",
       "label": "Buildings",
       "annotation": "buildings.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "economy_trade",
       "verified_version": "1.1.10",
       "summary": "Location-level constructs that employ pops, consume goods, and apply modifiers; defined in building_types/ and building_categories/."
@@ -142,7 +142,7 @@
       "id": "disasters",
       "label": "Disasters",
       "annotation": "disasters.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "tech_progression",
       "verified_version": "1.1.10",
       "summary": "Country-level crisis events that apply ongoing penalties and fire monthly events while active; only one can be active per country at a time."
@@ -151,7 +151,7 @@
       "id": "government_reforms",
       "label": "Government Reforms",
       "annotation": "government_reforms.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "government_politics",
       "verified_version": "1.1.10",
       "summary": "Optional modifiers and mechanics a country can adopt on top of its base government type; multiple reforms can be held simultaneously."
@@ -160,7 +160,7 @@
       "id": "government_types",
       "label": "Government Types",
       "annotation": "government_types.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "government_politics",
       "verified_version": "1.1.10",
       "summary": "Top-level classification of a country's ruling system, determining government power resource, heir selection methods, and available laws and reforms."
@@ -169,25 +169,16 @@
       "id": "laws",
       "label": "Laws",
       "annotation": "laws.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "government_politics",
       "verified_version": "1.1.10",
       "summary": "Named policy slots each holding one active policy; represent broad policy areas where switching costs a price and takes implementation time."
     },
     {
-      "id": "missions",
-      "label": "Missions",
-      "annotation": "missions.md",
-      "stage": "stub",
-      "cluster": "tech_progression",
-      "verified_version": "1.1.10",
-      "summary": "Stub — not yet annotated."
-    },
-    {
       "id": "modifiers",
       "label": "Modifiers",
       "annotation": "modifiers.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "scripted_infrastructure",
       "verified_version": "1.1.10",
       "summary": "Umbrella guide to EU5's modifier systems: inline, auto, scripted, and static — clarifies the four distinct systems and where to find documentation."
@@ -205,7 +196,7 @@
       "id": "production_methods",
       "label": "Production Methods",
       "annotation": "production_methods.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "economy_trade",
       "verified_version": "1.1.10",
       "summary": "Goods consumption and production recipes for buildings, defining inputs and outputs as either named PM definitions or inline building blocks."
@@ -268,7 +259,7 @@
       "id": "scripted_effects",
       "label": "Scripted Effects",
       "annotation": "scripted_effects.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "scripted_infrastructure",
       "verified_version": "1.1.10",
       "summary": "Named, reusable effect blocks callable anywhere in script with optional parameterized arguments, eliminating repetition for complex effect logic."
@@ -277,7 +268,7 @@
       "id": "scripted_triggers",
       "label": "Scripted Triggers",
       "annotation": "scripted_triggers.md",
-      "stage": "annotated",
+      "stage": "complete",
       "cluster": "scripted_infrastructure",
       "verified_version": "1.1.10",
       "summary": "Named, reusable trigger blocks callable anywhere in script with optional parameterized arguments, mirroring the scripted_effects pattern."
@@ -317,15 +308,6 @@
       "cluster": "characters_estates",
       "verified_version": "1.1.10",
       "summary": "Character-level modifiers shaping ruler, general, admiral, artist, and explorer effectiveness, with allow triggers, MTTH chance, and societal value interactions."
-    },
-    {
-      "id": "unit_types",
-      "label": "Unit Types",
-      "annotation": "unit_types.md",
-      "stage": "stub",
-      "cluster": "military_war",
-      "verified_version": "1.1.10",
-      "summary": "Stub — not yet annotated."
     },
     {
       "id": "wargoals",
@@ -614,6 +596,87 @@
       "cluster": "religion_culture",
       "verified_version": "1.1.10",
       "summary": "Name pools for characters and dynasties, associated with language families and referenced by cultures; interact with court, market, and common language mechanics."
+    },
+    {
+      "id": "levies",
+      "label": "Levies",
+      "annotation": "levies.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Pop-based conscription system granting units from eligible pop types; file order determines priority — specific levies must precede generic ones. Includes recruitment_method definitions for training speed and experience."
+    },
+    {
+      "id": "situations",
+      "label": "Situations",
+      "annotation": "situations.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Global multi-country historical crises (Black Death, Reformation, Hundred Years' War, Sengoku, ~20 total) with monthly callbacks, optional resolution votes, and map overlays."
+    },
+    {
+      "id": "institutions",
+      "label": "Institutions",
+      "annotation": "institutions.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Age-linked systems (Feudalism, Printing Press, etc.) that spread location-by-location via trade and borders; a country embraces when enough of its locations have adopted the institution."
+    },
+    {
+      "id": "diseases",
+      "label": "Diseases",
+      "annotation": "diseases.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Epidemic outbreaks using an SIR-like model; 7 vanilla diseases (plague, influenza, malaria, measles, smallpox, typhus, great pestilence) spread location-by-location with configurable R0, mortality, and map overlays."
+    },
+    {
+      "id": "parliament",
+      "label": "Parliament",
+      "annotation": "parliament.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Three-layer legislative/estate negotiation system: parliament types (structural form), agendas (periodic estate demands), and issues (policy motions with debate and vote mechanics)."
+    },
+    {
+      "id": "country_ranks",
+      "label": "Country Ranks",
+      "annotation": "country_ranks.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Prestige tiers (duchy, kingdom, empire, etc.) evaluated dynamically; each rank applies a modifier block and sets diplomatic capacity, fort limits, and AI interaction range."
+    },
+    {
+      "id": "formable_countries",
+      "label": "Formable Countries",
+      "annotation": "formable_countries.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Scripted nation-forming decisions requiring territory thresholds, a plausibility rule (historical/plausible/fantasy), and a country rank level; form_effect fires on transformation."
+    },
+    {
+      "id": "hegemons",
+      "label": "Hegemons",
+      "annotation": "hegemons.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "World-power designations (economic, naval, military, diplomatic, cultural) auto-awarded to the leading great power in each domain; each status grants a unique modifier block."
+    },
+    {
+      "id": "regencies",
+      "label": "Regencies",
+      "annotation": "regencies.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Interregnum and regency definitions for periods without an adult ruler; specifies eligible regents, start/end effects, modifiers, and whether assignment is engine-internal."
     }
   ]
 }
