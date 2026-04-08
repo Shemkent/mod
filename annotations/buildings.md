@@ -1,9 +1,9 @@
 # Buildings System
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** building_types, building_categories, construction, modifiers, production_methods, employment, estates, foreign buildings
 
----
+> **System type: Gameplay**
 
 ## Overview
 
@@ -13,7 +13,7 @@ There is no single `buildings/` folder — everything lives under `building_type
 
 ---
 
-## File Locations
+## Vanilla File Locations
 
 | Path | Purpose |
 |---|---|
@@ -50,7 +50,7 @@ There is no single `buildings/` folder — everything lives under `building_type
 
 ---
 
-## Building Definition Syntax
+## Block Structure
 
 ```
 building_key = {
@@ -129,6 +129,30 @@ building_key = {
 
 ---
 
+## Key Fields Reference
+
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `category` | Groups the building in UI and logic; determines which estate-related rules apply | Required; must match a key in `building_categories/` |
+| `pop_type` | Pop type employed by the building | Required; must be a valid pop type key |
+| `max_levels` | Maximum buildable levels; accepts a scripted int or literal | Usually references a `script_values/` constant |
+| `employment_size` | Employed pop size per level (1.0 = 1000 people) | Accepts scripted float; scales linearly with levels |
+| `rural_settlement` / `town` / `city` | Boolean flags controlling which location ranks can host this building | At least one must be `yes`; omitting all prevents construction anywhere |
+| `is_foreign` | Allows the building to be constructed in foreign-owned locations | Typically paired with `stronger_power_projection` and/or `need_good_relation` |
+| `location_potential` / `country_potential` | "Visible" gates — building is hidden if these fail; root = location or country respectively | Failing potential hides the building entirely (not just greyed out) |
+| `allow` | "Enabled" gate — building is visible but locked if this fails; root = location, `scope:actor` = builder | Use `?=` when owner may be absent to avoid crashes |
+| `remove_if` | Auto-removes the building when the block evaluates true; root = building | Engine evaluates monthly; safe to use `?=` for nullable scopes |
+| `modifier` | Modifiers applied to the location, scaled by `building_level × goods_access` | Do NOT put `fort_level` or `propagating_zone_of_control` here — use `raw_modifier` |
+| `raw_modifier` | Modifiers applied to the location, NOT scaled by level or goods access | Required for `fort_level` and `propagating_zone_of_control` |
+| `build_time` / `price` | Days to construct and gold cost respectively | Both accept scripted values; prefer `script_values/` constants over literals |
+| `possible_production_methods` | List of named PM keys (from `production_methods/`) selectable for this building | PM keys must exist in the named PM files |
+| `unique_production_methods` | Inline PM definitions specific to this building; same syntax as named PMs | Inline PMs are not available to other buildings |
+| `on_built` / `on_destroyed` | Effect blocks fired when the building is constructed or demolished | Root = location at time of trigger |
+| `estate` | Restricts construction to the named estate | Use `forbidden_for_estates = yes` to bar all estates (country-only construction) |
+| `obsolete` | When this building is built, the named building is automatically removed | Used for upgrade chains (e.g. fort tiers); one entry per obsoleted building |
+
+---
+
 ## Building Categories
 
 Defined in `building_categories/00_default.txt`. Categories are pure name-tags — no sub-fields. They group buildings for UI filtering and can be checked in scripted triggers.
@@ -181,7 +205,7 @@ Mark with `is_special = yes`. Gate with `country_potential` (reform, culture, et
 
 ---
 
-## Examples
+## Example
 
 ### 1. Simple rural resource extractor
 ```

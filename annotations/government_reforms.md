@@ -1,9 +1,9 @@
 # Government Reforms System
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** government_reforms, major, age, country_modifier, on_activate, potential, allow
 
----
+> **System type: Gameplay**
 
 ## Overview
 
@@ -32,7 +32,7 @@ Each reform applies `country_modifier`, `province_modifier`, and/or `location_mo
 
 ---
 
-## Syntax
+## Block Structure
 
 ```
 reform_key = {
@@ -74,6 +74,26 @@ reform_key = {
     societal_values = { <value_keys> }  # Reform counts toward unlocking these societal values.
 }
 ```
+
+---
+
+## Key Fields Reference
+
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `government` | Restricts the reform to a specific government type. | Optional; omit for cross-type reforms. |
+| `age` | Reform becomes available from this age onward. | Optional; omit = available from game start. |
+| `major` | Marks the reform as mutually exclusive — only one `major = yes` reform can be active per country. | All `major` reforms compete globally across all files. |
+| `unique` | Adds extra UI emphasis for notable reforms. | No gameplay effect beyond presentation. |
+| `potential` | Trigger block (root = country) controlling whether the reform is visible in the UI. | — |
+| `allow` | Trigger block (root = country) controlling whether the reform can be adopted. | — |
+| `locked` | Prevents the player changing this reform while true; does not remove it. | Trigger block (root = country). |
+| `years` / `months` / `weeks` / `days` | Implementation time — how long until `on_fully_activated` fires and modifiers reach 100%. | Use one field; they are additive if multiple are set. |
+| `on_activate` | Effects block (root = country) fired when the reform is first adopted. | — |
+| `on_fully_activated` | Effects block (root = country) fired when implementation reaches 100%. | — |
+| `on_deactivate` | Effects block (root = country) fired when the reform is removed. | — |
+| `country_modifier` / `province_modifier` / `location_modifier` | Modifiers applied to the country, its provinces, or specific locations while the reform is active. | Support scaled+triggered form; scale from 0 to full during implementation. |
+| `societal_values` | Lists societal value keys this reform counts toward unlocking. | Links to the societal values system. |
 
 ---
 
@@ -144,19 +164,15 @@ admiralty_regime_reform = {
         NOT = { government_type = government_type:steppe_horde }
         NOT = { government_type = government_type:tribe }
     }
-    # ... modifiers and effects ...
+    on_activate = {
+        custom_tooltip = admiralty_regime_reform_tt
+    }
+    country_modifier = {
+        monthly_towards_outward   = societal_value_monthly_move
+        naval_force_limit_modifier = 0.25
+    }
 }
 ```
-
----
-
-## Relationship to Laws
-
-Laws and reforms are complementary:
-- **Laws** hold one active **policy** at a time (mutually exclusive choices within a slot).
-- **Reforms** can all be active simultaneously (additive stacking), but `major = yes` reforms are mutually exclusive among themselves.
-
-Both use the same `country_modifier` / `on_activate` structure.
 
 ---
 
@@ -167,3 +183,4 @@ Both use the same `country_modifier` / `on_activate` structure.
 - To make a reform country-specific, gate with `potential = { has_or_had_tag = XXX }` or use `country_specific.txt`.
 - `major = yes` reforms compete with each other across all files — be careful not to introduce unintended exclusion.
 - `societal_values` links reforms to the societal values unlock system.
+- **Laws** hold one active **policy** at a time (mutually exclusive choices within a slot). **Reforms** can all be active simultaneously (additive stacking), but `major = yes` reforms are mutually exclusive among themselves. Both use the same `country_modifier` / `on_activate` structure.

@@ -1,9 +1,9 @@
 # Laws System
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** laws, policies, law_category, country_modifier, estate_preferences, government
 
----
+> **System type: Gameplay**
 
 ## Overview
 
@@ -44,7 +44,7 @@ Laws apply to countries (most laws) or international organizations (IO laws — 
 
 ---
 
-## Syntax
+## Block Structure
 
 ### Law block
 ```
@@ -103,6 +103,34 @@ policy_key = {
     wants_this_policy_bias = <scripted_maths>
 }
 ```
+
+---
+
+## Key Fields Reference
+
+### Law fields
+
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `law_category` | Groups the law in a UI tab. | Required; must match a defined category key (see table below). |
+| `law_gov_group` | Convenience shortcut restricting the law to a government type. | Equivalent to a `potential` trigger; handled by the engine for performance. |
+| `law_religion_group` | Convenience shortcut restricting the law to a religion or religion group. | Equivalent to a `potential` trigger. |
+| `law_country_group` | Convenience shortcut restricting the law to a country tag. | Equivalent to a `potential` trigger. |
+| `potential` / `allow` / `locked` | Trigger blocks (root = country) for visibility, adoptability, and lock state of the whole law slot. | `locked` prevents interaction without removing the law. |
+
+### Policy fields
+
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `price` | Gold or other resource cost to switch to this policy. | — |
+| `years` / `months` / `weeks` / `days` | Implementation time — how long until `on_fully_activated` fires and modifiers reach 100%. | Use one; multiple fields are additive. |
+| `on_pay_price` | Effects block (root = country) that fires when the cost is paid, before activation begins. | — |
+| `on_activate` | Effects block (root = country) fired when the policy is chosen. | — |
+| `on_fully_activated` | Effects block (root = country) fired when implementation reaches 100%. | — |
+| `on_deactivate` | Effects block (root = country) fired when the policy is removed or replaced. | — |
+| `country_modifier` / `province_modifier` / `location_modifier` | Modifiers applied to the country, its provinces, or specific locations while the policy is active. | Support scaled+triggered form; scale from 0 to full during implementation. |
+| `estate_preferences` | Lists estate types that prefer this policy; drives AI and estate opinion signals. | — |
+| `wants_this_policy_bias` | AI scoring weight; higher values make the AI prefer this policy over alternatives. | Scripted maths expression. |
 
 ---
 
@@ -234,3 +262,4 @@ nobles_electorate_policy = {
 - `law_gov_group`, `law_religion_group`, `law_country_group` are efficiency shortcuts — equivalent to a `potential` trigger but handled by the engine.
 - Always fill `estate_preferences` for policies that meaningfully favour or disfavour an estate — it drives AI and estate opinion signals.
 - For culture-unique or tag-unique policies, set `unique = yes` on the policy.
+- Reserved law-level keys (not treated as policies): `law_category`, `law_gov_group`, `law_religion_group`, `law_country_group`, `unique`, `requires_vote`, `custom_tags`, `show_tags_in_ui`, `potential`, `allow`, `locked`. Any other key is treated as a policy.

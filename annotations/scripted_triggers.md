@@ -1,13 +1,15 @@
 # Scripted Triggers
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** scripted_triggers, reusable triggers, arguments, $variable$, custom_description, trigger_if, trigger_else
 
----
+> **System type: Scripted Logic**
 
 ## Overview
 
 Scripted triggers are named, reusable trigger blocks. They allow complex or repeated trigger logic to be defined once and called anywhere in the script with `my_trigger = yes`. They support parameterized arguments and scope references — same mechanics as scripted_effects.
+
+See [scripted_effects.md](scripted_effects.md) for the parallel effects system — both use identical `$argument$` substitution mechanics.
 
 ---
 
@@ -46,7 +48,7 @@ Scripted triggers are named, reusable trigger blocks. They allow complex or repe
 
 ---
 
-## Syntax
+## Block Structure
 
 ### Simple trigger
 ```
@@ -85,16 +87,17 @@ my_trigger = { my_trigger_$type$ = yes }
 
 ---
 
-## custom_description Warning
+## Key Fields Reference
 
-Same as scripted_effects: do **not** use the same key for the trigger and its `custom_description`. Use a distinct `text` key:
-```
-# BAD:
-my_trigger = { custom_description = { text = my_trigger  object = ... } }
-
-# GOOD:
-my_trigger = { custom_description = { text = my_trigger_text  object = ... } }
-```
+| Field / Syntax | Purpose | Key constraint |
+|---|---|---|
+| `trigger_name = yes` | Argument-free call syntax — evaluates the trigger with no parameters | Trigger body must not reference any `$variable$` tokens |
+| `trigger_name = { key = value }` | Parameterized call syntax — passes one or more named arguments | All `$key$` tokens in the trigger body must be supplied |
+| `$variable$` | Placeholder substituted as plain text at parse time | Not typed; the engine performs string substitution before parsing the result |
+| `trigger_if` | Conditional branching — evaluates inner triggers only when `limit` passes | Must contain a `limit = {}` block; if limit fails the block is skipped |
+| `trigger_else` | Evaluated when the immediately preceding `trigger_if` limit fails | No `limit` block; paired with a preceding `trigger_if` |
+| `trigger_else_if` | Chained conditional — like `trigger_if` but only evaluated when the preceding branch's limit failed | Must contain a `limit = {}`; can chain multiple `trigger_else_if` blocks before a final `trigger_else` |
+| `custom_description` | Tooltip wrapper that replaces inner trigger descriptions with a single entry | `text` key must differ from the enclosing trigger's own key (see Modding Notes) |
 
 ---
 
@@ -147,3 +150,4 @@ Used as `country_can_ennoble_trigger = yes` in `allow` or `potential` blocks thr
 - `trigger_if` / `trigger_else` within a scripted trigger allow branching logic.
 - Scripted triggers used as end conditions for disasters (see [disasters.md](disasters.md)) are typically in `disaster_triggers.txt`.
 - Scripted triggers are called like any other trigger: `my_trigger = yes` (no args) or `my_trigger = { key = value }` (with args).
+- Do **not** use the same key for both the trigger and its `custom_description` — the engine cannot distinguish them. Use a distinct `text` key: `custom_description = { text = my_trigger_text ... }`, not `text = my_trigger`.

@@ -37,6 +37,7 @@ Run both phases together when scope fits in one pass.
 **Keywords:** top-level identifiers
 
 > **System type: [Gameplay | AI | UI/Presentation | Scripted Logic | Data/Reference]**
+> **Cluster**: see GAME_STRUCTURE_GUIDE.md.
 
 ## Overview
 What it does and why modders care (one paragraph).

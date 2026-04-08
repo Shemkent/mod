@@ -1,9 +1,9 @@
 # Government Types System
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** government_types, government_power, heir_selection, map_color, modifier
 
----
+> **System type: Gameplay**
 
 ## Overview
 
@@ -16,7 +16,7 @@ Government types are the top-level classification of a country's ruling system. 
 
 ---
 
-## File Location
+## Vanilla File Locations
 
 | Path | Purpose |
 |---|---|
@@ -24,7 +24,7 @@ Government types are the top-level classification of a country's ruling system. 
 
 ---
 
-## Syntax
+## Block Structure
 
 ```
 government_type_key = {
@@ -51,6 +51,21 @@ government_type_key = {
     revolutionary_country_antagonism = <int>  # Antagonism generated toward revolutionary countries.
 }
 ```
+
+---
+
+## Key Fields Reference
+
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `government_power` | The power resource this government type uses (e.g. `legitimacy`, `republican_tradition`, `devotion`, `horde_unity`, `tribal_cohesion`). | One per government type; must match a defined resource. |
+| `heir_selection` | Heir selection method valid for this government type. Repeated to list all supported methods. | Active method for a specific country is determined by that country's laws, not this field directly. |
+| `map_color` | Color key used for this government type in the political map mode. | References a color defined in the map color tables. |
+| `use_regnal_number` | When `yes`, rulers are displayed with an ordinal (e.g. Henry VIII rather than Henry). | Boolean; optional. |
+| `generate_consorts` | Whether consorts are generated for rulers of this government type. | Boolean; optional. |
+| `default_character_estate` | Estate characters default to if no explicit estate is assigned; affects AI estate interaction. | Optional; estate type key. |
+| `modifier` | Permanent baseline modifier applied to all countries of this government type. | Use sparingly — prefer reforms for granular control. |
+| `revolutionary_country_antagonism` | Antagonism score generated toward revolutionary countries each month; higher values make hostile interactions more likely. | Integer; optional. |
 
 ---
 
@@ -82,9 +97,40 @@ Each government type lists the `heir_selection` methods that are valid for count
 
 ---
 
+## Example
+
+The vanilla `monarchy` definition (abbreviated):
+```
+monarchy = {
+    government_power     = legitimacy
+    use_regnal_number    = yes
+    generate_consorts    = yes
+    map_color            = government_map_color_monarchy
+    default_character_estate = nobles_estate
+    revolutionary_country_antagonism = 10
+
+    heir_selection = cognatic_primogeniture
+    heir_selection = salic_law
+    heir_selection = absolute_cognatic_primogeniture
+    heir_selection = elective_succession
+    heir_selection = agnatic_primogeniture
+    heir_selection = tanistry
+    # ... additional methods
+
+    modifier = {
+        legitimacy_monthly    = 0.005
+        global_legitimacy_cap = 100
+    }
+}
+```
+The `heir_selection` list declares every method the engine allows for monarchies; which one a specific country uses is determined by their active laws.
+
+---
+
 ## Modding Notes
 
 - Government types are rarely modded directly; most customization is done via **reforms** and **laws**.
 - To add a new government type: add a new block to `00_default.txt`, define a `government_power` resource (or reuse an existing one), and list valid `heir_selection` methods.
 - `modifier` on a government type is a permanent global baseline — use sparingly; prefer reforms for granular control.
-- Adding a new `government_power` resource requires additional scripting outside this file (script values, UI).
+- Adding a new `government_power` requires parallel scripting of the resource UI and script values that cap and increment it — government_types.txt alone is not sufficient.
+- New `heir_selection` method keys must be registered both here (in the list) and in heir_selections/ definitions.

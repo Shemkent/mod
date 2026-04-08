@@ -1,9 +1,9 @@
 # Production Methods System
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** production_methods, building_maintenance, goods, input, output, category, no_upkeep, potential, allow
 
----
+> **System type: Gameplay**
 
 ## Overview
 
@@ -26,7 +26,7 @@ Most maintenance-only PMs live in the named PM files. Production-heavy and build
 
 ---
 
-## Syntax
+## Block Structure
 
 ```
 pm_key = {
@@ -48,6 +48,20 @@ pm_key = {
     allow     = { <triggers> }  # Root = country. Whether this PM can be selected.
 }
 ```
+
+---
+
+## Key Fields Reference
+
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `<good_key>` (input goods) | Goods consumed per tick per building level to keep the building operating | Any valid good key; multiple entries allowed; amounts scale with building level and goods access when referenced via `possible_production_methods` |
+| `produced` | The good this PM outputs | Optional; omit for maintenance-only PMs |
+| `output` | Quantity of the produced good per tick per building level | Required when `produced` is set |
+| `category` | Groups the PM in UI and logic | Required; must be a valid PM category key (e.g. `building_maintenance`, `guild_input`, `building_production`) |
+| `no_upkeep` | Suppresses maintenance cost UI display; goods inputs in the PM are still consumed as normal | Default `no`; set `yes` for PMs that should appear "free" in the UI |
+| `potential` | Trigger block controlling whether this PM appears as a valid option | Root = country owning the building |
+| `allow` | Trigger block controlling whether this PM can be selected | Root = country owning the building; failing `allow` greys out the PM |
 
 ---
 
@@ -91,7 +105,7 @@ unique_production_methods = {
 
 ---
 
-## Examples
+## Example
 
 ### 1. Pure maintenance PM (named)
 ```
@@ -141,3 +155,4 @@ lutheran_preacher_maintenance = {
 - For PMs shared across multiple buildings, define them as named PMs.
 - `potential` and `allow` are scoped to the **country** owning the building, not the location.
 - Scaling: PM goods amounts are multiplied by building level and (for buildings) goods access — same as `modifier` scaling on buildings.
+- PM goods amounts are scaled by building level and goods access — the same scaling as `modifier` on buildings — but only when referenced via `possible_production_methods`; check whether inline PMs in `unique_production_methods` scale identically.
