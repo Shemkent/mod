@@ -668,6 +668,114 @@
       "cluster": "characters_estates",
       "verified_version": "1.1.10",
       "summary": "Interregnum and regency definitions for periods without an adult ruler; specifies eligible regents, start/end effects, modifiers, and whether assignment is engine-internal."
+    },
+    {
+      "id": "cabinet_actions",
+      "label": "Cabinet Actions",
+      "annotation": "cabinet_actions.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Ongoing minister assignments (adm/dip/mil) that continuously apply country and location modifiers while active; share the select_trigger pipeline with country_interactions."
+    },
+    {
+      "id": "resolutions",
+      "label": "Resolutions",
+      "annotation": "resolutions.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Proposal-and-vote system for International Organizations and Situations; supports unilateral or voted enactment, weighted voting, deadlines, and multi-stage target selection."
+    },
+    {
+      "id": "subject_military_stances",
+      "label": "Subject Military Stances",
+      "annotation": "subject_military_stances.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Named AI priority weight sets governing subject military behaviour — pursuit, defence, sieging, logistics, and recruitment — assignable per subject type or country."
+    },
+    {
+      "id": "unit_formation_preference",
+      "label": "Unit Formation Preference",
+      "annotation": "unit_formation_preference.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Named battle formation templates defining weighted unit-type distributions for left, centre, right, and reserve wings with per-wing max frontage multipliers."
+    },
+    {
+      "id": "road_types",
+      "label": "Road Types",
+      "annotation": "road_types.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Infrastructure upgrade tiers (gravel → railroad) each defining movement speed, market access, capital proximity, build cost, and construction goods requirements."
+    },
+    {
+      "id": "location_ranks",
+      "label": "Location Ranks",
+      "annotation": "location_ranks.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Settlement upgrade tiers (village → town → city) applying rank modifiers to locations and per-city modifiers to owning countries; upgrades are gated by population and current rank."
+    },
+    {
+      "id": "town_setups",
+      "label": "Town Setups",
+      "annotation": "town_setups.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Named presets of starting building configurations applied to locations at scenario start; used by setup files to give historically appropriate initial infrastructure."
+    },
+    {
+      "id": "historical_scores",
+      "label": "Historical Scores",
+      "annotation": "historical_scores.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Reference leaderboard entries (famous rulers/moments with tag and score) shown on the end-game score screen for contextual comparison; display-only, no gameplay effect."
+    },
+    {
+      "id": "map_geography",
+      "label": "Map Geography (Climates, Topography, Vegetation)",
+      "annotation": "map_geography.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Three stacking location property systems: climates (winter/population/disease), topography (terrain shape/movement/combat), and vegetation (ground cover/supply/food); all three location_modifier blocks sum additively."
+    },
+    {
+      "id": "genes",
+      "label": "Genes & Persistent DNA",
+      "annotation": "genes.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Heritable portrait gene definitions (colour, morphology, accessories) and per-character DNA overrides for named historical figures; consumed by the portrait rendering engine."
+    },
+    {
+      "id": "ethnicities",
+      "label": "Ethnicities",
+      "annotation": "ethnicities.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Probability distributions over gene expression ranges for regional/cultural character groups; cultures reference ethnicity definitions to determine what their characters look like."
+    },
+    {
+      "id": "death_reason",
+      "label": "Death Reasons, Heir Reasons & Country Description Categories",
+      "annotation": "death_reason.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Three small UI enumerations: death causes with optional contextual parameters, heir designation reasons, and country lobby profile category labels; display-only with localization key conventions."
     }
   ]
 }

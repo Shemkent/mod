@@ -234,4 +234,5 @@ Edge type definitions are in [`.claude/annotator.md`](../.claude/annotator.md#gr
 
 - [ ] **Mermaid diagram** — generate static flowchart from `_system_index.json` + `_system_edges.json` once annotation pass is substantially complete
 - [ ] **Interactive graph viewer** — D3/Cytoscape/vis.js consuming both JSON files; features: click node → annotation, filter by edge type, cluster zoom, version-stale coloring
-- [ ] **Remaining systems** — Tier 8 niche/UI systems not yet annotated: resolutions, cabinet_actions, map_geography, genes/ethnicities, main_menu static_modifiers (partial), and any unlisted `in_game/common/` folders
+- [ ] **main_menu systems** — `game_rules`, `scenarios`, `achievements`, `game_concepts`, `named_colors`, `coat_of_arms`, `flag_definitions` not yet annotated
+- [ ] **Tutorial/UI stubs** — `tutorial_lessons`, `tutorial_lesson_chains`, `music_player_tracks` skipped (not modding-relevant)
