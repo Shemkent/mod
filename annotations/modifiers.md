@@ -1,9 +1,9 @@
 # Modifiers System
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** modifiers, country_modifier, location_modifier, province_modifier, auto_modifiers, scripted_modifiers, scaled, raw_modifier
 
----
+> **System type: Scripted Logic**
 
 ## Overview
 
@@ -78,7 +78,7 @@ add_country_modifier = {
 }
 remove_country_modifier = my_modifier_key
 ```
-Named modifiers referenced this way are defined as standalone modifier blocks (in events, on_actions, etc.) with a key that can be referenced later.
+Named modifiers referenced by `add_country_modifier` are standalone modifier blocks defined inline in events, on_actions, or scripted effects — they are not defined in a dedicated folder. The modifier block sits alongside the effect code that first applies it.
 
 ---
 
@@ -91,6 +91,26 @@ Named modifiers referenced this way are defined as standalone modifier blocks (i
 | scripted_modifiers | `scripted_modifiers/` | Weight/value calculations for random lists; NOT country modifiers |
 | static_modifiers | (absent in v1.1.10) | Hardcoded engine modifiers |
 | add_country_modifier | (effect) | Dynamically apply/remove named modifiers |
+
+---
+
+## Example
+
+The most common modifier context is a `country_modifier` block inside a law or government reform. The modifier applies to the owning country for as long as the law is active:
+
+```
+my_law = {
+    ...
+    country_modifier = {
+        army_morale = 0.05
+        global_tax_modifier = -0.1
+        stability_cost_modifier = 0.15
+    }
+    ...
+}
+```
+
+For system-specific modifier keys (which stats are valid in each context) see the individual system annotations listed in Cross-References below.
 
 ---
 

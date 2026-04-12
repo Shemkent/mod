@@ -2,6 +2,8 @@
 **Stage:** complete
 **Keywords:** `avatar_id`, `god`, `potential`, `allow`, `years`/`months`/`weeks`/`days`, `on_activate`, `on_fully_activated`, `on_deactivate`, `country_modifier`, `province_modifier`, `location_modifier`
 
+> **System type: Gameplay**
+
 ## Overview
 Avatars are divine manifestations in the Hindu religion system, representing different forms of a god (e.g. the ten avatars of Vishnu, the forms of Shakti). A country with Hinduism can adopt an avatar via scripted effect (`add_avatar`) to receive ongoing modifiers and trigger effects. Each avatar belongs to a god and optionally has adoption conditions, an activation delay, and modifiers at country/province/location scope. Currently only `hindu.txt` is defined in vanilla.
 

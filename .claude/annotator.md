@@ -7,6 +7,8 @@ Working on `vanilla-annotation` branch? Read this.
 |---|---|
 | `annotations/[system].md` | Output — human-readable reference |
 | `annotations/_file_index.csv` | `file, systems, stage, game_version` |
+| `annotations/_system_index.json` | Graph nodes: system id, stage, cluster, version, summary |
+| `annotations/_system_edges.json` | Graph edges: cross-system relationships |
 | `annotations/GAME_STRUCTURE_GUIDE.md` | System index, domain clusters, priority tiers |
 
 ## Workflow
@@ -23,9 +25,10 @@ Run both phases together when scope fits in one pass.
 2. Write `[system].md` using the format below
 3. Mark rows `stage=annotated` in `_file_index.csv`
 4. Set stage header in `[system].md` to `complete`
-5. Commit on `vanilla-annotation`: `annotate: [system name]`
-6. Spawn `reviewer` with prompt: `Review annotations/[system].md for prose quality`
-7. Recommend 1–2 next systems from the same domain cluster that fit a single session
+5. Update `_system_index.json` (add/update node) and `_system_edges.json` (add edges) — see Graph maintenance
+6. Commit on `vanilla-annotation`: `annotate: [system name]`
+7. Spawn `reviewer` with prompt: `Review annotations/[system].md for prose quality`
+8. Recommend 1–2 next systems from the same domain cluster that fit a single session
 
 ## Annotation format
 ```markdown
@@ -34,6 +37,7 @@ Run both phases together when scope fits in one pass.
 **Keywords:** top-level identifiers
 
 > **System type: [Gameplay | AI | UI/Presentation | Scripted Logic | Data/Reference]**
+> **Cluster**: see GAME_STRUCTURE_GUIDE.md.
 
 ## Overview
 What it does and why modders care (one paragraph).
@@ -65,7 +69,7 @@ One representative vanilla block with brief commentary.
 - **Data/Reference** — static lookup tables
 
 ## Completeness criteria
-An annotation is `complete` when: all major fields documented, at least one example, all source files marked `annotated` in `_file_index.csv`, `GAME_STRUCTURE_GUIDE.md` entry links to the annotation.
+An annotation is `complete` when: all major fields documented, system type marker present, at least one example, all source files marked `annotated` in `_file_index.csv`, `GAME_STRUCTURE_GUIDE.md` entry links to the annotation, node added to `_system_index.json`, edges added to `_system_edges.json`.
 
 ## Graph maintenance
 

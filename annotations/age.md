@@ -2,6 +2,8 @@
 **Stage:** complete
 **Keywords:** `age_[id]`, `year`, `price_stability`, `max_price`, `hegemons_allowed`, `efficiency`, `unique`, `modifier`, `mercenaries`, `victory_card`, `war_score_from_battles`, `months_for_exploration_spread`, `max_ai_privilege_per_estate`, `min_ai_privilege_per_estate`
 
+> **System type: Gameplay**
+
 ## Overview
 Ages are global time-period definitions that segment the game into six historical eras (Traditions → Renaissance → Discovery → Reformation → Absolutism → Revolutions). Each age sets world-wide economic parameters, military scale modifiers, hegemon availability, victory card targets, and AI estate-privilege behavior. As the game clock advances through each age's `year` threshold, these modifiers replace the previous era's values — making ages the primary lever for tuning how the game feels at different historical periods. Modders can add new ages, shift start years, or tweak individual modifiers to reshape the game's pacing and difficulty curve.
 

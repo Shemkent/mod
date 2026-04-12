@@ -1,9 +1,9 @@
 # Disasters System
-**Stage:** annotated
+**Stage:** complete
 **Game version:** 1.1.10
 **Keywords:** disasters, monthly_spawn_chance, can_start, can_end, on_start, on_end, on_monthly, modifier, fire_only_once
 
----
+> **System type: Gameplay**
 
 ## Overview
 
@@ -11,7 +11,7 @@ Disasters are country-level crisis events that apply ongoing penalties and fire 
 
 ---
 
-## File Location
+## Vanilla File Locations
 
 | Path | Purpose |
 |---|---|
@@ -20,7 +20,7 @@ Disasters are country-level crisis events that apply ongoing penalties and fire 
 
 ---
 
-## Syntax
+## Block Structure
 
 ```
 disaster_key = {
@@ -44,7 +44,22 @@ disaster_key = {
 
 ---
 
-## Key Mechanics
+## Key Fields Reference
+
+| Field | Purpose | Key constraint |
+|---|---|---|
+| `monthly_spawn_chance` | Monthly probability (0..1) that the disaster starts; evaluated each month against the country | References a scripted value from `script_values/`; root = country, `scope:disaster` = disaster type |
+| `can_start` | Trigger block that must pass for the disaster to begin | Should include `has_any_active_disaster = no` to prevent stacking |
+| `can_end` | Trigger block evaluated each month; when it passes the disaster ends | Typically a named scripted trigger from `scripted_triggers/` for reuse in events/decisions |
+| `modifier` | Modifier block applied to the country for the entire duration of the disaster | Removed automatically when the disaster ends; no manual cleanup needed |
+| `on_start` | Effect block fired once when the disaster begins | Root = country, `scope:disaster` = disaster type |
+| `on_monthly` | Effect block fired every month while the disaster is active | Keep lightweight — see Modding Notes for performance implications |
+| `on_end` | Effect block fired once when the disaster ends | Root = country, `scope:disaster` = disaster type |
+| `fire_only_once` | Prevents the disaster from occurring more than once per country | Default `no`; set `yes` for historical one-time crises |
+| `image` | Path to the UI illustration displayed during the disaster | Optional; `.dds` format |
+| `map_mode` | Map mode tag activated while the disaster is active | Optional |
+
+## Mechanics
 
 ### Spawn chance
 `monthly_spawn_chance` is evaluated each month. It references a scripted value (from `script_values/`) returning a float 0..1. Vanilla uses named values like `monthly_spawn_chance_very_low`, `monthly_spawn_chance_medium`.
@@ -62,7 +77,7 @@ monthly_spawn_chance passes → on_start fires → modifier applied → on_month
 
 ---
 
-## Examples
+## Example
 
 ### 1. Generic succession crisis
 ```
@@ -131,6 +146,6 @@ peasants_war = {
 
 - One file per disaster is the vanilla convention, but multiple disasters per file work fine.
 - Always include `has_any_active_disaster = no` in `can_start` unless intentionally allowing overlap.
-- `on_monthly` fires every month for the duration — keep it lightweight (use `random_list` to probabilistically dispatch events).
+- `on_monthly` fires every month for all active disasters simultaneously — keep it lightweight; use `random_list` to probabilistically dispatch events rather than running effects unconditionally each tick.
 - End triggers (`can_end`) are typically defined as named scripted triggers in `scripted_triggers/` for reuse in events/decisions.
 - `modifier` is removed automatically when the disaster ends.

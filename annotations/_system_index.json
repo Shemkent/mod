@@ -1,0 +1,782 @@
+{
+  "clusters": {
+    "religion_culture": { "label": "Religion & Culture", "color": "#4a90d9" },
+    "economy_trade": { "label": "Economy & Trade", "color": "#d9a94a" },
+    "diplomacy_interactions": { "label": "Diplomacy & Interactions", "color": "#d94a4a" },
+    "government_politics": { "label": "Government & Politics", "color": "#4ad97a" },
+    "characters_estates": { "label": "Characters & Estates", "color": "#9a4ad9" },
+    "military_war": { "label": "Military & War", "color": "#d9704a" },
+    "tech_progression": { "label": "Technology & Progression", "color": "#4ad9d9" },
+    "scripted_infrastructure": { "label": "Scripted Infrastructure", "color": "#888888" },
+    "ui_presentation": { "label": "UI / Presentation", "color": "#bbbbbb" },
+    "ai": { "label": "AI", "color": "#d9d94a" },
+    "geography_map": { "label": "Geography & Map", "color": "#6ab04c" }
+  },
+  "systems": [
+    {
+      "id": "age",
+      "label": "Age",
+      "annotation": "age.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Global time-period definitions that set world-wide economic parameters, military scale modifiers, and hegemon availability for each historical era."
+    },
+    {
+      "id": "ai_diplochance",
+      "label": "AI Diplomatic Chance",
+      "annotation": "ai_diplochance.md",
+      "stage": "complete",
+      "cluster": "ai",
+      "verified_version": "1.1.10",
+      "summary": "Weighted-score tables the AI uses to evaluate acceptance of diplomatic actions such as marriage proposals, subject demands, and peace offers."
+    },
+    {
+      "id": "alert_descriptions",
+      "label": "Alert Descriptions",
+      "annotation": "alert_descriptions.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Maps named alert IDs to their UI presentation properties (icon, priority, tooltip title); contains no trigger logic."
+    },
+    {
+      "id": "artist_types",
+      "label": "Artist Types",
+      "annotation": "artist_types.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Named artist specializations (painter, composer, calligrapher, etc.) with optional potential triggers restricting them to certain religions or advances."
+    },
+    {
+      "id": "artist_work",
+      "label": "Artist Work",
+      "annotation": "artist_work.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Defines categories of cultural artifact artists can create and the country/location modifiers they apply, cross-referencing artist_types."
+    },
+    {
+      "id": "attribute_columns",
+      "label": "Attribute Columns",
+      "annotation": "attribute_columns.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Configures visible columns and sort options for every interactive selection list in the game (country picker, character picker, etc.)."
+    },
+    {
+      "id": "avatars",
+      "label": "Avatars",
+      "annotation": "avatars.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Divine manifestations in the Hindu religion system that countries can adopt to receive ongoing modifiers and triggered effects."
+    },
+    {
+      "id": "advances",
+      "label": "Advances",
+      "annotation": "advances.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "The research tree of EU5 — discrete nodes a country researches to unlock content, gain modifiers, and gate buildings, laws, CBs, and reforms behind progression."
+    },
+    {
+      "id": "auto_modifiers",
+      "label": "Auto Modifiers",
+      "annotation": "auto_modifiers.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Persistent modifiers applied automatically to a scoped entity whenever their conditions are met, translating game state into ongoing mechanical effects."
+    },
+    {
+      "id": "buildings",
+      "label": "Buildings",
+      "annotation": "buildings.md",
+      "stage": "complete",
+      "cluster": "economy_trade",
+      "verified_version": "1.1.10",
+      "summary": "Location-level constructs that employ pops, consume goods, and apply modifiers; defined in building_types/ and building_categories/."
+    },
+    {
+      "id": "casus_belli",
+      "label": "Casus Belli",
+      "annotation": "casus_belli.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Legal justifications a country may use to declare war, binding declaration logic to a war goal type and governing valid province targets."
+    },
+    {
+      "id": "character_interactions",
+      "label": "Character Interactions",
+      "annotation": "character_interactions.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Scripted button-driven actions players use to manage individual characters — executing, pardoning, appointing, marrying, promoting, or commissioning art."
+    },
+    {
+      "id": "child_educations",
+      "label": "Child Educations",
+      "annotation": "child_educations.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Educational programs for child characters at court that apply character modifiers and determine which adult traits emerge at coming-of-age."
+    },
+    {
+      "id": "cultures",
+      "label": "Cultures",
+      "annotation": "cultures.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Ethnic and linguistic identities of pops, characters, and locations; each culture sets a language, map color, opinion relationships, and optional modifiers."
+    },
+    {
+      "id": "disasters",
+      "label": "Disasters",
+      "annotation": "disasters.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Country-level crisis events that apply ongoing penalties and fire monthly events while active; only one can be active per country at a time."
+    },
+    {
+      "id": "government_reforms",
+      "label": "Government Reforms",
+      "annotation": "government_reforms.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Optional modifiers and mechanics a country can adopt on top of its base government type; multiple reforms can be held simultaneously."
+    },
+    {
+      "id": "government_types",
+      "label": "Government Types",
+      "annotation": "government_types.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Top-level classification of a country's ruling system, determining government power resource, heir selection methods, and available laws and reforms."
+    },
+    {
+      "id": "laws",
+      "label": "Laws",
+      "annotation": "laws.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Named policy slots each holding one active policy; represent broad policy areas where switching costs a price and takes implementation time."
+    },
+    {
+      "id": "modifiers",
+      "label": "Modifiers",
+      "annotation": "modifiers.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Umbrella guide to EU5's modifier systems: inline, auto, scripted, and static — clarifies the four distinct systems and where to find documentation."
+    },
+    {
+      "id": "policies",
+      "label": "Policies",
+      "annotation": "policies.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "In v1.1.10 the policies/ folder is empty by design — policies are created indirectly from laws, which carry all policy-equivalent content."
+    },
+    {
+      "id": "production_methods",
+      "label": "Production Methods",
+      "annotation": "production_methods.md",
+      "stage": "complete",
+      "cluster": "economy_trade",
+      "verified_version": "1.1.10",
+      "summary": "Goods consumption and production recipes for buildings, defining inputs and outputs as either named PM definitions or inline building blocks."
+    },
+    {
+      "id": "religions",
+      "label": "Religions",
+      "annotation": "religions.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Faith definitions assigning each religion to a group, declaring its mechanics (karma, purity, honor), definition modifiers, opinion relationships, and sub-system registrations."
+    },
+    {
+      "id": "religious_aspects",
+      "label": "Religious Aspects",
+      "annotation": "religious_aspects.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Optional doctrines or practices countries can adopt for their religion, applying modifier blocks and opinion effects with other aspects."
+    },
+    {
+      "id": "holy_sites",
+      "label": "Holy Sites",
+      "annotation": "holy_sites.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Location-anchored sacred sites for one or more religions, with importance-scaled modifiers applied to the location, owning country, and matching religion."
+    },
+    {
+      "id": "religious_focuses",
+      "label": "Religious Focuses",
+      "annotation": "religious_focuses.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Religion-specific research projects a country completes over time to earn permanent modifiers, assigned to religions via their definition blocks."
+    },
+    {
+      "id": "religious_schools",
+      "label": "Religious Schools",
+      "annotation": "religious_schools.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Three religion sub-systems: schools (philosophical traditions granting modifiers), figures (named character roles per faith), and factions (court power blocs)."
+    },
+    {
+      "id": "gods",
+      "label": "Gods",
+      "annotation": "gods.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Religion-specific deities countries can adopt for modifiers and triggered effects, associated with religion groups or individual religions."
+    },
+    {
+      "id": "scripted_effects",
+      "label": "Scripted Effects",
+      "annotation": "scripted_effects.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named, reusable effect blocks callable anywhere in script with optional parameterized arguments, eliminating repetition for complex effect logic."
+    },
+    {
+      "id": "scripted_triggers",
+      "label": "Scripted Triggers",
+      "annotation": "scripted_triggers.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named, reusable trigger blocks callable anywhere in script with optional parameterized arguments, mirroring the scripted_effects pattern."
+    },
+    {
+      "id": "subject_types",
+      "label": "Subject Types",
+      "annotation": "subject_types.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Defines every overlord–subject relationship (vassal, march, tributary, dominion, etc.) including war-joining, annexation, modifiers, and AI weighting."
+    },
+    {
+      "id": "technologies",
+      "label": "Technologies",
+      "annotation": "technologies.md",
+      "stage": "stub",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Not applicable in v1.1.10 — the technologies/ folder is absent; research progression is handled by the advances system."
+    },
+    {
+      "id": "traits",
+      "label": "Traits",
+      "annotation": "traits.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Character-level modifiers shaping ruler, general, admiral, artist, and explorer effectiveness, with allow triggers, MTTH chance, and societal value interactions."
+    },
+    {
+      "id": "wargoals",
+      "label": "War Goals",
+      "annotation": "wargoals.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Defines what a war is fought for and what can be demanded at the peace table, referenced by casus belli via war_goal_type."
+    },
+    {
+      "id": "country_interactions",
+      "label": "Country Interactions",
+      "annotation": "country_interactions.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Scripted diplomatic or subject-management actions one country performs toward another, covering alliances, religion enforcement, and tribute demands."
+    },
+    {
+      "id": "generic_actions",
+      "label": "Generic Actions",
+      "annotation": "generic_actions.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Fully-scripted action system covering own-country, diplomatic, character, location, IO, and parliament actions without requiring code-side handlers."
+    },
+    {
+      "id": "international_organizations",
+      "label": "International Organizations",
+      "annotation": "international_organizations.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Multi-country entities above bilateral diplomacy (HRE, Papacy, leagues, alliances) with membership rules, leader modifiers, parliaments, payments, and special statuses."
+    },
+    {
+      "id": "estates",
+      "label": "Estates",
+      "annotation": "estates.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Political factions within a country (nobles, clergy, burghers, etc.) with power, satisfaction, and opinion; estate privileges grant modifier blocks while active."
+    },
+    {
+      "id": "goods",
+      "label": "Goods",
+      "annotation": "goods.md",
+      "stage": "complete",
+      "cluster": "economy_trade",
+      "verified_version": "1.1.10",
+      "summary": "Tradeable commodities with base price, extraction method, food value, and per-pop demand; extended by prices/, goods_demand/, and goods_demand_category/ folders."
+    },
+    {
+      "id": "pop_types",
+      "label": "Pop Types",
+      "annotation": "pop_types.md",
+      "stage": "complete",
+      "cluster": "economy_trade",
+      "verified_version": "1.1.10",
+      "summary": "Distinct population classes (nobles, clergy, burghers, laborers, soldiers, peasants, tribesmen, slaves) with food consumption, promotion rates, and estate assignments."
+    },
+    {
+      "id": "employment_systems",
+      "label": "Employment Systems",
+      "annotation": "employment_systems.md",
+      "stage": "complete",
+      "cluster": "economy_trade",
+      "verified_version": "1.1.10",
+      "summary": "Determines building staffing priority under labour scarcity, grants a country modifier while active, and nudges societal values toward specific orientations."
+    },
+    {
+      "id": "societal_values",
+      "label": "Societal Values",
+      "annotation": "societal_values.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Bidirectional political/economic/cultural sliders where both ends apply blended modifiers proportional to the country's current position on each axis."
+    },
+    {
+      "id": "heir_selections",
+      "label": "Heir Selections",
+      "annotation": "heir_selections.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Scripted succession law rules defining candidate filtering, scoring, and validation for determining the next ruler."
+    },
+    {
+      "id": "missions",
+      "label": "Missions",
+      "annotation": "missions.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Country objective chains with weighted selection from a potential pool; each mission contains a DAG of tasks with prerequisites, timed completion, and reward effects."
+    },
+    {
+      "id": "unit_types",
+      "label": "Unit Types",
+      "annotation": "unit_types.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Defines military and naval units with category-inherited base stats, terrain modifiers, and copy_from inheritance; unit abilities define scripted field actions."
+    },
+    {
+      "id": "ai_biases",
+      "label": "AI Biases",
+      "annotation": "ai_biases.md",
+      "stage": "complete",
+      "cluster": "ai",
+      "verified_version": "1.1.10",
+      "summary": "Named opinion, trust, and antagonism modifier entries applied between countries by engine code or scripted effects, with optional caps, expiry, and yearly decay."
+    },
+    {
+      "id": "ai_rivals",
+      "label": "AI Rivals",
+      "annotation": "ai_rivals.md",
+      "stage": "complete",
+      "cluster": "ai",
+      "verified_version": "1.1.10",
+      "summary": "Tag-specific triggers and block lists that restrict which countries the AI will choose as rivals; players are unaffected."
+    },
+    {
+      "id": "ai_generic_actions",
+      "label": "AI Generic Action Lists",
+      "annotation": "ai_generic_actions.md",
+      "stage": "complete",
+      "cluster": "ai",
+      "verified_version": "1.1.10",
+      "summary": "Named conditional sets of generic actions the AI evaluates periodically; potential trigger gates the list, actions block lists candidates."
+    },
+    {
+      "id": "ai_war",
+      "label": "AI War (Join War Rules)",
+      "annotation": "ai_war.md",
+      "stage": "complete",
+      "cluster": "ai",
+      "verified_version": "1.1.10",
+      "summary": "Named triggers that block AI countries from joining specific wars as allies; rule key doubles as localisation for the decline reason."
+    },
+    {
+      "id": "scripted_relations",
+      "label": "Scripted Relations",
+      "annotation": "scripted_relations.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Defines all bilateral diplomatic relationships (alliance, guarantee, access, embargo, etc.) with directionality, war behaviour, monthly flows, AI weights, and lifecycle effects."
+    },
+    {
+      "id": "scripted_country_names",
+      "label": "Scripted Country Names",
+      "annotation": "scripted_country_names.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Conditional country name overrides triggered by simultaneous country, capital, and territory checks; used for colonial naming (New Spain, Jamaica, etc.)."
+    },
+    {
+      "id": "scripted_guis",
+      "label": "Scripted GUIs",
+      "annotation": "scripted_guis.md",
+      "stage": "not applicable",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Script-driven GUI button definitions with show/valid/effect/AI fields; no vanilla definitions in v1.1.10."
+    },
+    {
+      "id": "scriptable_hints",
+      "label": "Scriptable Hints",
+      "annotation": "scriptable_hints.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Context-sensitive advisor hints shown when priority triggers fire, with per-playstyle localisation tag variants; UI-only, no gameplay effects."
+    },
+    {
+      "id": "effect_localization",
+      "label": "Effect Localization",
+      "annotation": "effect_localization.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Maps effect names to tooltip localisation keys with pronoun (global/first/third) and tense (present/past) variants; no gameplay logic."
+    },
+    {
+      "id": "trigger_localization",
+      "label": "Trigger Localization",
+      "annotation": "trigger_localization.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Maps trigger names to tooltip localisation keys including pronoun variants, NOT forms, value-comparison operator specialisations, and any-trigger count/percent variants."
+    },
+    {
+      "id": "customizable_localization",
+      "label": "Customizable Localization",
+      "annotation": "customizable_localization.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Named inline loc functions called from localisation strings via [FunctionKey()]; return the first matching loc key from a trigger-gated cascade with a fallback."
+    },
+    {
+      "id": "script_values",
+      "label": "Script Values",
+      "annotation": "script_values.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named constants and scoped math formulas referenceable anywhere a numeric argument is accepted; support arithmetic, conditionals, randomness, scope traversal, and list aggregation."
+    },
+    {
+      "id": "on_action",
+      "label": "On Actions",
+      "annotation": "on_action.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named engine-fired hooks that additively accumulate event lists, on-action chains, and inline effects across all files; the primary safe injection point for mods."
+    },
+    {
+      "id": "scripted_geography",
+      "label": "Scripted Geography",
+      "annotation": "scripted_geography.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named groupings of locations, areas, regions, and province definitions that expose iteration lists, membership tests, and country presence checks."
+    },
+    {
+      "id": "scripted_diplomatic_objectives",
+      "label": "Scripted Diplomatic Objectives",
+      "annotation": "scripted_diplomatic_objectives.md",
+      "stage": "complete",
+      "cluster": "ai",
+      "verified_version": "1.1.10",
+      "summary": "Named AI behaviour templates that instruct a country to persistently pursue a diplomatic strategy (improve, antagonise, destroy) toward a filtered set of target countries."
+    },
+    {
+      "id": "scripted_modifiers",
+      "label": "Scripted Modifiers",
+      "annotation": "scripted_modifiers.md",
+      "stage": "not applicable",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named reusable weight-modifier blocks for random_list and AI weighting; no vanilla definitions in v1.1.10."
+    },
+    {
+      "id": "static_modifiers",
+      "label": "Static Modifiers",
+      "annotation": "static_modifiers.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named modifier blocks applied explicitly to scoped entities by engine code or scripted effects, with optional decay and auto-removal on religion/culture change."
+    },
+    {
+      "id": "scripted_lists",
+      "label": "Scripted Lists",
+      "annotation": "scripted_lists.md",
+      "stage": "complete",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Named, filtered views of built-in scope iteration lists; define one block and the engine registers every_/any_/random_/ordered_ variants automatically."
+    },
+    {
+      "id": "scripted_rules",
+      "label": "Scripted Rules",
+      "annotation": "scripted_rules.md",
+      "stage": "not applicable",
+      "cluster": "scripted_infrastructure",
+      "verified_version": "1.1.10",
+      "summary": "Reserved system for named boolean rule overrides; folder exists but contains no vanilla definitions in v1.1.10."
+    },
+    {
+      "id": "languages",
+      "label": "Languages",
+      "annotation": "languages.md",
+      "stage": "complete",
+      "cluster": "religion_culture",
+      "verified_version": "1.1.10",
+      "summary": "Name pools for characters and dynasties, associated with language families and referenced by cultures; interact with court, market, and common language mechanics."
+    },
+    {
+      "id": "levies",
+      "label": "Levies",
+      "annotation": "levies.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Pop-based conscription system granting units from eligible pop types; file order determines priority — specific levies must precede generic ones. Includes recruitment_method definitions for training speed and experience."
+    },
+    {
+      "id": "situations",
+      "label": "Situations",
+      "annotation": "situations.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Global multi-country historical crises (Black Death, Reformation, Hundred Years' War, Sengoku, ~20 total) with monthly callbacks, optional resolution votes, and map overlays."
+    },
+    {
+      "id": "institutions",
+      "label": "Institutions",
+      "annotation": "institutions.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Age-linked systems (Feudalism, Printing Press, etc.) that spread location-by-location via trade and borders; a country embraces when enough of its locations have adopted the institution."
+    },
+    {
+      "id": "diseases",
+      "label": "Diseases",
+      "annotation": "diseases.md",
+      "stage": "complete",
+      "cluster": "tech_progression",
+      "verified_version": "1.1.10",
+      "summary": "Epidemic outbreaks using an SIR-like model; 7 vanilla diseases (plague, influenza, malaria, measles, smallpox, typhus, great pestilence) spread location-by-location with configurable R0, mortality, and map overlays."
+    },
+    {
+      "id": "parliament",
+      "label": "Parliament",
+      "annotation": "parliament.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Three-layer legislative/estate negotiation system: parliament types (structural form), agendas (periodic estate demands), and issues (policy motions with debate and vote mechanics)."
+    },
+    {
+      "id": "country_ranks",
+      "label": "Country Ranks",
+      "annotation": "country_ranks.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Prestige tiers (duchy, kingdom, empire, etc.) evaluated dynamically; each rank applies a modifier block and sets diplomatic capacity, fort limits, and AI interaction range."
+    },
+    {
+      "id": "formable_countries",
+      "label": "Formable Countries",
+      "annotation": "formable_countries.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Scripted nation-forming decisions requiring territory thresholds, a plausibility rule (historical/plausible/fantasy), and a country rank level; form_effect fires on transformation."
+    },
+    {
+      "id": "hegemons",
+      "label": "Hegemons",
+      "annotation": "hegemons.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "World-power designations (economic, naval, military, diplomatic, cultural) auto-awarded to the leading great power in each domain; each status grants a unique modifier block."
+    },
+    {
+      "id": "regencies",
+      "label": "Regencies",
+      "annotation": "regencies.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Interregnum and regency definitions for periods without an adult ruler; specifies eligible regents, start/end effects, modifiers, and whether assignment is engine-internal."
+    },
+    {
+      "id": "cabinet_actions",
+      "label": "Cabinet Actions",
+      "annotation": "cabinet_actions.md",
+      "stage": "complete",
+      "cluster": "government_politics",
+      "verified_version": "1.1.10",
+      "summary": "Ongoing minister assignments (adm/dip/mil) that continuously apply country and location modifiers while active; share the select_trigger pipeline with country_interactions."
+    },
+    {
+      "id": "resolutions",
+      "label": "Resolutions",
+      "annotation": "resolutions.md",
+      "stage": "complete",
+      "cluster": "diplomacy_interactions",
+      "verified_version": "1.1.10",
+      "summary": "Proposal-and-vote system for International Organizations and Situations; supports unilateral or voted enactment, weighted voting, deadlines, and multi-stage target selection."
+    },
+    {
+      "id": "subject_military_stances",
+      "label": "Subject Military Stances",
+      "annotation": "subject_military_stances.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Named AI priority weight sets governing subject military behaviour — pursuit, defence, sieging, logistics, and recruitment — assignable per subject type or country."
+    },
+    {
+      "id": "unit_formation_preference",
+      "label": "Unit Formation Preference",
+      "annotation": "unit_formation_preference.md",
+      "stage": "complete",
+      "cluster": "military_war",
+      "verified_version": "1.1.10",
+      "summary": "Named battle formation templates defining weighted unit-type distributions for left, centre, right, and reserve wings with per-wing max frontage multipliers."
+    },
+    {
+      "id": "road_types",
+      "label": "Road Types",
+      "annotation": "road_types.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Infrastructure upgrade tiers (gravel → railroad) each defining movement speed, market access, capital proximity, build cost, and construction goods requirements."
+    },
+    {
+      "id": "location_ranks",
+      "label": "Location Ranks",
+      "annotation": "location_ranks.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Settlement upgrade tiers (village → town → city) applying rank modifiers to locations and per-city modifiers to owning countries; upgrades are gated by population and current rank."
+    },
+    {
+      "id": "town_setups",
+      "label": "Town Setups",
+      "annotation": "town_setups.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Named presets of starting building configurations applied to locations at scenario start; used by setup files to give historically appropriate initial infrastructure."
+    },
+    {
+      "id": "historical_scores",
+      "label": "Historical Scores",
+      "annotation": "historical_scores.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Reference leaderboard entries (famous rulers/moments with tag and score) shown on the end-game score screen for contextual comparison; display-only, no gameplay effect."
+    },
+    {
+      "id": "map_geography",
+      "label": "Map Geography (Climates, Topography, Vegetation)",
+      "annotation": "map_geography.md",
+      "stage": "complete",
+      "cluster": "geography_map",
+      "verified_version": "1.1.10",
+      "summary": "Three stacking location property systems: climates (winter/population/disease), topography (terrain shape/movement/combat), and vegetation (ground cover/supply/food); all three location_modifier blocks sum additively."
+    },
+    {
+      "id": "genes",
+      "label": "Genes & Persistent DNA",
+      "annotation": "genes.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Heritable portrait gene definitions (colour, morphology, accessories) and per-character DNA overrides for named historical figures; consumed by the portrait rendering engine."
+    },
+    {
+      "id": "ethnicities",
+      "label": "Ethnicities",
+      "annotation": "ethnicities.md",
+      "stage": "complete",
+      "cluster": "characters_estates",
+      "verified_version": "1.1.10",
+      "summary": "Probability distributions over gene expression ranges for regional/cultural character groups; cultures reference ethnicity definitions to determine what their characters look like."
+    },
+    {
+      "id": "death_reason",
+      "label": "Death Reasons, Heir Reasons & Country Description Categories",
+      "annotation": "death_reason.md",
+      "stage": "complete",
+      "cluster": "ui_presentation",
+      "verified_version": "1.1.10",
+      "summary": "Three small UI enumerations: death causes with optional contextual parameters, heir designation reasons, and country lobby profile category labels; display-only with localization key conventions."
+    }
+  ]
+}

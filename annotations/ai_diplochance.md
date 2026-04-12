@@ -2,6 +2,8 @@
 **Stage:** complete
 **Keywords:** `action_key`, `base`, `opinion`, `trust_in_actor`, `rank_difference`, `different_religion`, `different_culture`, `war_exhaustion`, `in_debt`, `yesman`, `enforced_demand`, `relative_strength`, `border_distance`
 
+> **System type: AI**
+
 ## Overview
 `ai_diplochance` defines the weighted-score tables the AI uses to evaluate acceptance of diplomatic actions — marriage proposals, subject demands, loans, military access, peace offers, call-to-arms, and province trades. Each action has a named block of factor keys mapped to numeric weights; the AI sums all applicable factors to produce a final acceptance score. Positive values push toward acceptance, negative values push toward rejection. Extreme values (±1000 or larger) act as hard gates. Modders can tune individual weights to make the AI more or less receptive to specific diplomatic overtures.
 

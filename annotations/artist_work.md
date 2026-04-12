@@ -2,6 +2,8 @@
 **Stage:** complete
 **Keywords:** `work_type_id`, `captured`, `allow`, `location_modifier`, `country_modifier`, `religion_scale_modifier`
 
+> **System type: UI/Presentation**
+
 ## Overview
 Artist work types define what categories of cultural artifact (painting, symphony, palace, treatise, etc.) can be created by artists and what effects they produce. Each type specifies whether it can be looted by conquering armies (`captured`), which artist type(s) can create it (`allow`), and what modifiers it applies — to the owner country, to the location where it resides, or scaled to the whole religion. Cross-references `artist_types` via the `artist_type` trigger in `allow`.
 
