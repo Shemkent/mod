@@ -240,3 +240,28 @@ in_game/common/regencies/3_burghers_regency.txt,regencies,complete,1.1.10
 in_game/common/regencies/4_peasants_regency.txt,regencies,complete,1.1.10
 in_game/common/regencies/9_overlord_regency.txt,regencies,complete,1.1.10
 in_game/common/regencies/[3 succession files],regencies,complete,1.1.10
+in_game/common/cabinet_actions/[65 files — see cabinet_actions/ folder],cabinet_actions,complete,1.1.10
+in_game/common/resolutions/readme.txt,resolutions,complete,1.1.10
+in_game/common/resolutions/[19 further files — see resolutions/ folder],resolutions,complete,1.1.10
+in_game/common/subject_military_stances/readme.txt,subject_military_stances,complete,1.1.10
+in_game/common/subject_military_stances/00_default.txt,subject_military_stances,complete,1.1.10
+in_game/common/unit_formation_preference/readme.txt,unit_formation_preference,complete,1.1.10
+in_game/common/unit_formation_preference/army.txt,unit_formation_preference,complete,1.1.10
+in_game/common/unit_formation_preference/navy.txt,unit_formation_preference,complete,1.1.10
+in_game/common/road_types/readme.txt,road_types,complete,1.1.10
+in_game/common/road_types/00_generic.txt,road_types,complete,1.1.10
+in_game/common/location_ranks/00_default.txt,location_ranks,complete,1.1.10
+in_game/common/town_setups/00_default.txt,town_setups,complete,1.1.10
+in_game/common/historical_scores/the_best_and_worst.txt,historical_scores,complete,1.1.10
+in_game/common/climates/00_default.txt,map_geography,complete,1.1.10
+in_game/common/topography/00_default.txt,map_geography,complete,1.1.10
+in_game/common/vegetation/00_default.txt,map_geography,complete,1.1.10
+in_game/common/genes/[10 files — see genes/ folder],genes,complete,1.1.10
+in_game/common/persistent_dna/custom_characters.txt,genes,complete,1.1.10
+in_game/common/ethnicities/[10+ files — see ethnicities/ folder],ethnicities,complete,1.1.10
+in_game/common/death_reason/00_hardcoded.txt,death_reason,complete,1.1.10
+in_game/common/death_reason/01_content.txt,death_reason,complete,1.1.10
+in_game/common/death_reason/02_life_expectancy.txt,death_reason,complete,1.1.10
+in_game/common/designated_heir_reason/00_standard.txt,death_reason,complete,1.1.10
+in_game/common/country_description_categories/readme.txt,death_reason,complete,1.1.10
+in_game/common/country_description_categories/categories.txt,death_reason,complete,1.1.10

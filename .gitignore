@@ -12,6 +12,19 @@
 !/in_game/setup/
 !/main_menu/common/static_modifiers/
 
+# Skipped directories — not modding-relevant
+in_game/common/tutorial_lessons/
+in_game/common/tutorial_lesson_chains/
+in_game/common/music_player_tracks/
+in_game/common/tests/
+main_menu/common/game_rules/
+main_menu/common/scenarios/
+main_menu/common/achievements/
+main_menu/common/game_concepts/
+main_menu/common/named_colors/
+main_menu/common/coat_of_arms/
+main_menu/common/flag_definitions/
+
 # Within mod directories, ignore backup/temp files
 mod/**/*.mod.backup
 mod/**/*.mod.old
