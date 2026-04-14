@@ -8,7 +8,7 @@
 !.gitignore
 !.nojekyll
 !README.md
-!graph.html
+!index.html
 !/in_game/common/
 !/in_game/events/
 !/in_game/setup/

@@ -2,7 +2,7 @@
 
 A reference library documenting EU5's script systems for modders. Each annotation explains how a game system works, what fields it exposes, and how it connects to other systems. All annotations verified against v1.1.10.
 
-## [→ Interactive System Graph](https://shemkent.github.io/EU5-Annotation-Modding/graph.html)
+## [→ Interactive System Graph](https://shemkent.github.io/EU5-Annotation-Modding/)
 
 85 systems across 11 clusters — click any node to read its annotation. Filter by relationship type, zoom to a cluster, or search by name.
 
@@ -24,7 +24,7 @@ Machine-readable graph data: [`annotations/_system_index.json`](annotations/_sys
 
 | Path | Contents |
 |---|---|
-| `graph.html` | Interactive system graph viewer (GitHub Pages) |
+| `index.html` | Interactive system graph viewer (GitHub Pages) |
 | `annotations/` | Vanilla system reference — 85 systems, v1.1.10 |
 | `mod/` | Mod directories, each with `.metadata/` for mod-specific notes |
 
