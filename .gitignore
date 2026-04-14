@@ -6,6 +6,7 @@
 !/mod/
 !/.claude/
 !.gitignore
+!.nojekyll
 !README.md
 !/in_game/common/
 !/in_game/events/

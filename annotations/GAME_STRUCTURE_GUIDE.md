@@ -63,6 +63,4 @@ The annotation project tracks cross-system relationships as a typed edge graph f
 Edge type definitions are in [`.claude/annotator.md`](../.claude/annotator.md#graph-maintenance).
 
 ## TODO
-
-- [x] **Mermaid diagram** — cluster-level flowchart in `README.md`; full edge data in `_system_edges.json`
-- [ ] **Interactive graph viewer** — D3/Cytoscape/vis.js consuming both JSON files; features: click node → annotation, filter by edge type, cluster zoom, version-stale coloring
+- [x] **Interactive graph viewer** — `graph.html`; Cytoscape.js; click node → annotation, edge-type filters, cluster focus, weight-scaled nodes, word-cloud layout

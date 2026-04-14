@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EU5 System Graph</title>
+
+  <!-- ========================
+       CSS
+       ======================== -->
+  <style>
+    /* --- Reset & Variables --- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-page: #e8e4de;
+      --bg-surface: #f2efe9;
+      --bg-elevated: #ddd9d2;
+      --text: #3b3833;
+      --text-muted: #8a857d;
+      --border: #cbc6be;
+      --accent: #5a7fb5;
+      --sidebar-w: 440px;
+      --toolbar-h: 48px;
+    }
+    html, body { height: 100%; font-family: "Inter", "Segoe UI", system-ui, sans-serif; background: var(--bg-page); color: var(--text); }
+
+    /* --- Layout --- */
+    body { display: flex; flex-direction: column; overflow: hidden; }
+    #toolbar {
+      height: var(--toolbar-h); min-height: var(--toolbar-h);
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      background: var(--bg-surface); border-bottom: 1px solid var(--border);
+      overflow-x: auto; white-space: nowrap;
+    }
+    #workspace { display: flex; flex: 1; min-height: 0; position: relative; }
+    #cy { flex: 1; min-width: 0; }
+    #sidebar {
+      width: 0; overflow: hidden;
+      transition: width 0.3s ease;
+      background: var(--bg-surface); border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+    #sidebar.open { width: var(--sidebar-w); }
+
+    /* --- Toolbar controls --- */
+    #toolbar h1 { font-size: 15px; font-weight: 600; margin-right: 8px; flex-shrink: 0; color: var(--text); }
+    .tb-sep { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+
+    .edge-toggle {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 4px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); font-size: 12px; cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .edge-toggle.active { background: var(--bg-elevated); color: var(--text); border-color: var(--text-muted); }
+    .edge-toggle .edge-swatch {
+      display: inline-block; width: 18px; height: 0;
+      border-top-width: 2px; border-top-style: solid;
+    }
+
+    #search {
+      margin-left: auto; flex-shrink: 0;
+      padding: 5px 10px; width: 180px; border-radius: 4px;
+      border: 1px solid var(--border); background: var(--bg-surface);
+      color: var(--text); font-size: 13px; outline: none;
+    }
+    #search:focus { border-color: var(--accent); }
+    #search::placeholder { color: var(--text-muted); }
+
+    /* --- Floating legend panel --- */
+    #legend-panel {
+      position: absolute; bottom: 16px; left: 16px; z-index: 5;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 2px;
+      max-height: 360px; overflow-y: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      font-size: 12px;
+    }
+    #legend-panel .legend-title {
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .cluster-chip {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 8px; border-radius: 6px;
+      border: 1px solid transparent; background: transparent;
+      color: var(--text); font-size: 12px; cursor: pointer;
+      transition: background 0.15s;
+      text-align: left; width: 100%;
+    }
+    .cluster-chip:hover { background: var(--bg-elevated); }
+    .cluster-chip.focused { border-color: var(--accent); color: var(--accent); background: var(--bg-elevated); }
+    .cluster-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    #clear-focus {
+      display: none; margin-top: 4px; padding: 4px 8px; border-radius: 6px;
+      border: 1px solid var(--accent); background: transparent;
+      color: var(--accent); font-size: 12px; cursor: pointer;
+      width: 100%; text-align: center;
+    }
+    #clear-focus.visible { display: block; }
+
+    /* --- Sidebar --- */
+    #sidebar-header {
+      padding: 14px 16px 10px; border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    #sidebar-header .top-row { display: flex; align-items: flex-start; gap: 8px; }
+    #sidebar-close {
+      background: none; border: 2px solid var(--accent);
+      color: var(--accent); border-radius: 6px;
+      font-size: 18px; font-weight: 700; cursor: pointer;
+      width: 32px; height: 32px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1; transition: background 0.15s, color 0.15s;
+    }
+    #sidebar-close:hover { background: var(--accent); color: #fff; }
+    #sidebar-header h2 { font-size: 16px; font-weight: 600; line-height: 1.3; flex: 1; }
+    #sidebar-meta { display: flex; gap: 8px; margin-top: 6px; font-size: 12px; flex-wrap: wrap; }
+    .meta-badge {
+      padding: 2px 8px; border-radius: 4px;
+      background: var(--bg-elevated); color: var(--text-muted);
+    }
+    #sidebar-summary { margin-top: 8px; font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+    #sidebar-content {
+      flex: 1; overflow-y: auto; padding: 16px;
+      font-size: 14px; line-height: 1.6;
+    }
+
+    /* --- Markdown prose --- */
+    #sidebar-content h1 { display: none; }
+    #sidebar-content h2 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+    #sidebar-content h3 { font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
+    #sidebar-content p { margin: 0 0 10px; }
+    #sidebar-content ul, #sidebar-content ol { margin: 0 0 10px; padding-left: 20px; }
+    #sidebar-content li { margin-bottom: 4px; }
+    #sidebar-content table { width: 100%; border-collapse: collapse; margin: 0 0 12px; font-size: 13px; }
+    #sidebar-content th, #sidebar-content td { padding: 5px 8px; border: 1px solid var(--border); text-align: left; }
+    #sidebar-content th { background: var(--bg-elevated); font-weight: 600; }
+    #sidebar-content code { font-family: "Cascadia Code", "Fira Code", "Consolas", monospace; font-size: 0.9em; background: var(--bg-elevated); padding: 1px 5px; border-radius: 3px; }
+    #sidebar-content pre { background: var(--bg-elevated); padding: 12px; border-radius: 6px; overflow-x: auto; margin: 0 0 12px; }
+    #sidebar-content pre code { background: none; padding: 0; font-size: 12px; }
+    #sidebar-content blockquote { border-left: 3px solid var(--accent); padding-left: 12px; margin: 0 0 10px; color: var(--text-muted); }
+    #sidebar-content strong { color: var(--text); }
+    #sidebar-content a { color: var(--accent); text-decoration: none; }
+    #sidebar-content a:hover { text-decoration: underline; }
+
+    .sidebar-loading { text-align: center; color: var(--text-muted); padding: 32px 0; }
+    .sidebar-error { color: #b5443e; padding: 16px; }
+
+    /* --- Loading overlay --- */
+    #loading {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: var(--bg-page); z-index: 100; font-size: 15px; color: var(--text-muted);
+    }
+    #loading.hidden { display: none; }
+    #error-overlay {
+      position: fixed; inset: 0; display: none; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px;
+      background: var(--bg-page); z-index: 101; color: #b5443e;
+    }
+    #error-overlay.visible { display: flex; }
+    #error-overlay button {
+      padding: 8px 20px; border-radius: 4px; border: 1px solid #b5443e;
+      background: transparent; color: #b5443e; cursor: pointer; font-size: 14px;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 900px) {
+      #sidebar.open { position: absolute; right: 0; top: 0; bottom: 0; width: 100%; z-index: 10; }
+      #legend-panel { bottom: 8px; left: 8px; max-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================
+       HTML Structure
+       ======================== -->
+  <header id="toolbar">
+    <h1>EU5 System Graph</h1>
+    <div class="tb-sep"></div>
+    <div id="edge-filters"></div>
+    <input type="text" id="search" placeholder="Search systems...">
+  </header>
+
+  <main id="workspace">
+    <div id="cy"></div>
+    <aside id="sidebar">
+      <div id="sidebar-header">
+        <div class="top-row">
+          <button id="sidebar-close">&times;</button>
+          <h2 id="sidebar-title"></h2>
+        </div>
+        <div id="sidebar-meta"></div>
+        <p id="sidebar-summary"></p>
+      </div>
+      <div id="sidebar-content"></div>
+    </aside>
+
+    <!-- Floating cluster legend -->
+    <div id="legend-panel">
+      <div class="legend-title">Clusters</div>
+      <div id="cluster-chips"></div>
+      <button id="clear-focus">Clear focus</button>
+    </div>
+  </main>
+
+  <div id="loading">Loading graph data...</div>
+  <div id="error-overlay">
+    <p id="error-msg">Failed to load graph data.</p>
+    <button onclick="location.reload()">Retry</button>
+  </div>
+
+  <!-- ========================
+       CDN Dependencies
+       ======================== -->
+  <script src="https://unpkg.com/cytoscape@3.30.4/dist/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/marked@15.0.7/marked.min.js"></script>
+
+  <script>
+    /* ============================
+       Constants & Config
+       ============================ */
+    const CURRENT_VERSION = '1.1.10';
+
+    const EDGE_STYLES = {
+      references:      { color: '#7a7a7a', line: 'solid',  width: 1.5, arrow: 'triangle',               label: 'references' },
+      registers:       { color: '#1a5276', line: 'solid',  width: 2.5, arrow: 'triangle-backcurve',      label: 'registers' },
+      shared_mechanic: { color: '#5b2c6f', line: 'dashed', width: 2,   arrow: 'none',                    label: 'shared mechanic' },
+      modifies:        { color: '#922b21', line: 'solid',  width: 2,   arrow: 'vee',                     label: 'modifies' },
+      hierarchy:       { color: '#1e6e3e', line: 'solid',  width: 3,   arrow: 'triangle-tee',            label: 'hierarchy' }
+    };
+
+    // Dark, saturated EU5-style cluster colors (override _system_index.json palette)
+    const CLUSTER_COLORS = {
+      religion_culture:       '#1e4d7a',
+      economy_trade:          '#7a5a1e',
+      diplomacy_interactions:  '#7a1e1e',
+      government_politics:    '#1e5a2e',
+      characters_estates:     '#4a1e6a',
+      military_war:           '#7a3418',
+      tech_progression:       '#145a5a',
+      scripted_infrastructure: '#3a3a42',
+      ui_presentation:        '#52525a',
+      ai:                     '#5a5a18',
+      geography_map:          '#2a5a1e'
+    };
+
+    let cy = null;
+    let systemIndex = null;
+    let currentAbort = null;
+    let focusedCluster = null;
+
+    /* ============================
+       Data Loading
+       ============================ */
+    async function loadData() {
+      const [indexResp, edgesResp] = await Promise.all([
+        fetch('_system_index.json'),
+        fetch('_system_edges.json')
+      ]);
+      if (!indexResp.ok || !edgesResp.ok) throw new Error('Fetch failed');
+      return {
+        index: await indexResp.json(),
+        edges: await edgesResp.json()
+      };
+    }
+
+    /* ============================
+       Element Construction
+       ============================ */
+    function buildElements(index, edges) {
+      const clusters = index.clusters;
+      const clusterIds = Object.keys(clusters);
+      const systemMap = new Map();
+      index.systems.forEach(function (s) { systemMap.set(s.id, s); });
+
+      // --- Compute per-node edge weight ---
+      const edgeWeight = {};
+      for (const e of edges) {
+        if (systemMap.has(e.from)) edgeWeight[e.from] = (edgeWeight[e.from] || 0) + 1;
+        if (systemMap.has(e.to))   edgeWeight[e.to]   = (edgeWeight[e.to] || 0) + 1;
+      }
+
+      // --- Group by cluster, compute cluster weights ---
+      const clusterMembers = {};
+      const clusterWeight = {};
+      for (const sys of index.systems) {
+        if (!clusterMembers[sys.cluster]) clusterMembers[sys.cluster] = [];
+        clusterMembers[sys.cluster].push(sys);
+        var w = (edgeWeight[sys.id] || 0) + 1;
+        clusterWeight[sys.cluster] = (clusterWeight[sys.cluster] || 0) + w;
+      }
+
+      // --- Word-cloud layout: heavier clusters closer to center ---
+      var graphCx = 600, graphCy = 450;
+
+      // Sort clusters by weight descending — heaviest first (closest to center)
+      var sortedClusters = clusterIds.slice().sort(function (a, b) {
+        return (clusterWeight[b] || 0) - (clusterWeight[a] || 0);
+      });
+
+      // Place clusters using a spiral: heavy near center, light toward periphery
+      var centroids = {};
+      var spiralStep = 170;
+      var angleOffset = 0;
+      for (var ci = 0; ci < sortedClusters.length; ci++) {
+        var cid = sortedClusters[ci];
+        // Spiral: distance grows with index, angle rotates by golden angle
+        var dist = ci === 0 ? 0 : spiralStep * Math.sqrt(ci);
+        var angle = ci * 2.399963 + angleOffset; // golden angle in radians
+        centroids[cid] = {
+          x: graphCx + dist * Math.cos(angle),
+          y: graphCy + dist * Math.sin(angle)
+        };
+      }
+
+      var elements = [];
+
+      // --- Place nodes within each cluster, heavier nodes closer to centroid ---
+      for (var k = 0; k < clusterIds.length; k++) {
+        var clusterId = clusterIds[k];
+        var members = clusterMembers[clusterId] || [];
+        var center = centroids[clusterId];
+
+        // Sort members by weight descending
+        members.sort(function (a, b) {
+          return (edgeWeight[b.id] || 0) - (edgeWeight[a.id] || 0);
+        });
+
+        var n = members.length;
+        var localRadius = Math.max(28, n * 16);
+
+        for (var j = 0; j < n; j++) {
+          var sys = members[j];
+          var cluster = clusters[sys.cluster] || {};
+          var nodeWeight = (edgeWeight[sys.id] || 0) + 1;
+          var classes = [];
+          if (sys.stage === 'stub') classes.push('stage-stub');
+          if (sys.stage === 'not applicable') classes.push('stage-na');
+          if (sys.verified_version !== CURRENT_VERSION) classes.push('stale');
+
+          // Inner nodes (heavier) closer to centroid, outer (lighter) further out
+          var layerFrac = n <= 1 ? 0 : j / (n - 1);
+          var r = localRadius * (0.15 + layerFrac * 0.85);
+          var localAngle = (2 * Math.PI * j) / n - Math.PI / 2;
+
+          // Node size scales with weight
+          var nodeSize = Math.max(22, Math.min(52, 18 + nodeWeight * 3));
+
+          var color = CLUSTER_COLORS[sys.cluster] || cluster.color || '#555';
+
+          elements.push({
+            group: 'nodes',
+            data: {
+              id: sys.id,
+              label: sys.label,
+              annotation: sys.annotation,
+              stage: sys.stage,
+              cluster: sys.cluster,
+              clusterLabel: cluster.label || sys.cluster,
+              color: color,
+              version: sys.verified_version,
+              summary: sys.summary,
+              weight: nodeWeight,
+              nodeSize: nodeSize
+            },
+            position: {
+              x: center.x + r * Math.cos(localAngle),
+              y: center.y + r * Math.sin(localAngle)
+            },
+            classes: classes.join(' ')
+          });
+        }
+      }
+
+      // --- Edges ---
+      for (var ei = 0; ei < edges.length; ei++) {
+        var edge = edges[ei];
+        if (!systemMap.has(edge.from) || !systemMap.has(edge.to)) {
+          var missing = !systemMap.has(edge.from) ? edge.from : edge.to;
+          console.warn('Skipping edge: unknown system ID "' + missing + '"', edge);
+          continue;
+        }
+        elements.push({
+          group: 'edges',
+          data: {
+            id: edge.from + '->' + edge.to + ':' + edge.type,
+            source: edge.from,
+            target: edge.to,
+            type: edge.type,
+            note: edge.note || '',
+            bidirectional: !!edge.bidirectional
+          },
+          classes: edge.type
+        });
+      }
+
+      return elements;
+    }
+
+    /* ============================
+       Cytoscape Styles
+       ============================ */
+    function getCyStyles() {
+      const styles = [
+        // Base node — transparent fill for glassy look
+        {
+          selector: 'node',
+          style: {
+            'label': 'data(label)',
+            'background-color': 'data(color)',
+            'background-opacity': 0.80,
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'font-size': '10px',
+            'font-family': '"Inter","Segoe UI",system-ui,sans-serif',
+            'text-wrap': 'wrap',
+            'text-max-width': '110px',
+            'width': 'data(nodeSize)',
+            'height': 'data(nodeSize)',
+            'border-width': 2,
+            'border-color': 'rgba(0,0,0,0.12)',
+            'text-margin-y': 5,
+            'color': '#3b3833',
+            'text-outline-color': 'rgba(242,239,233,0.7)',
+            'text-outline-width': 2,
+            'transition-property': 'opacity, border-color, border-width, background-opacity',
+            'transition-duration': '0.2s'
+          }
+        },
+        // Stage: stub
+        { selector: 'node.stage-stub', style: { 'border-style': 'dashed', 'border-color': '#aa8800' } },
+        // Stage: not applicable
+        { selector: 'node.stage-na', style: { 'opacity': 0.45 } },
+        // Version stale
+        { selector: 'node.stale', style: { 'border-color': '#c0392b', 'border-width': 4, 'border-style': 'double' } },
+        // Interaction
+        { selector: 'node:selected', style: { 'border-color': '#3b3833', 'border-width': 3, 'background-opacity': 0.9, 'overlay-opacity': 0.06 } },
+        { selector: 'node.highlighted', style: { 'border-color': '#d4a017', 'border-width': 3, 'background-opacity': 0.85 } },
+        { selector: 'node.dimmed', style: { 'opacity': 0.12 } },
+        { selector: 'node.search-dim', style: { 'opacity': 0.15 } },
+        // Base edge
+        {
+          selector: 'edge',
+          style: {
+            'curve-style': 'bezier',
+            'opacity': 0.55,
+            'transition-property': 'opacity',
+            'transition-duration': '0.2s'
+          }
+        },
+        { selector: 'edge.dimmed', style: { 'opacity': 0.06 } },
+        { selector: 'edge.search-dim', style: { 'opacity': 0.06 } }
+      ];
+
+      // Edge type styles
+      for (const [type, cfg] of Object.entries(EDGE_STYLES)) {
+        styles.push({
+          selector: 'edge.' + type,
+          style: {
+            'line-color': cfg.color,
+            'target-arrow-color': cfg.color,
+            'source-arrow-color': cfg.color,
+            'width': cfg.width,
+            'line-style': cfg.line,
+            'target-arrow-shape': cfg.arrow
+          }
+        });
+        styles.push({
+          selector: 'edge.' + type + '[?bidirectional]',
+          style: { 'source-arrow-shape': cfg.arrow === 'none' ? 'none' : cfg.arrow }
+        });
+      }
+
+      return styles;
+    }
+
+    /* ============================
+       Cytoscape Init
+       ============================ */
+    function initGraph(elements) {
+      cy = cytoscape({
+        container: document.getElementById('cy'),
+        elements: elements,
+        style: getCyStyles(),
+        layout: {
+          name: 'preset',
+          fit: true,
+          padding: 50
+        },
+        minZoom: 0.15,
+        maxZoom: 4
+      });
+
+      // Node click -> sidebar
+      cy.on('tap', 'node', function (evt) {
+        openAnnotation(evt.target.data());
+      });
+
+      // Click background -> close sidebar
+      cy.on('tap', function (evt) {
+        if (evt.target === cy) closeSidebar();
+      });
+
+      // Edge tooltip on hover
+      cy.on('mouseover', 'edge', function (evt) {
+        var edge = evt.target;
+        edge.style('label', edge.data('note'));
+        edge.style('font-size', '10px');
+        edge.style('color', '#3b3833');
+        edge.style('text-outline-color', 'rgba(242,239,233,0.85)');
+        edge.style('text-outline-width', 2);
+        edge.style('text-rotation', 'autorotate');
+      });
+      cy.on('mouseout', 'edge', function (evt) {
+        evt.target.style('label', '');
+      });
+
+      return cy;
+    }
+
+    /* ============================
+       Sidebar & Markdown
+       ============================ */
+    async function openAnnotation(sysData) {
+      var sidebar = document.getElementById('sidebar');
+      var content = document.getElementById('sidebar-content');
+
+      document.getElementById('sidebar-title').textContent = sysData.label;
+      document.getElementById('sidebar-meta').innerHTML =
+        '<span class="meta-badge" style="border-left:3px solid ' + sysData.color + '">' + sysData.clusterLabel + '</span>' +
+        '<span class="meta-badge">' + sysData.stage + '</span>' +
+        '<span class="meta-badge">v' + sysData.version + '</span>';
+      document.getElementById('sidebar-summary').textContent = sysData.summary;
+
+      sidebar.classList.add('open');
+      sidebar.addEventListener('transitionend', function handler() {
+        sidebar.removeEventListener('transitionend', handler);
+        if (cy) cy.resize();
+      });
+
+      content.innerHTML = '<p class="sidebar-loading">Loading annotation...</p>';
+
+      if (currentAbort) currentAbort.abort();
+      currentAbort = new AbortController();
+
+      try {
+        var resp = await fetch(sysData.annotation, { signal: currentAbort.signal });
+        if (!resp.ok) throw new Error(resp.status + ' ' + resp.statusText);
+        var md = await resp.text();
+        content.innerHTML = marked.parse(md);
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        content.innerHTML = '<p class="sidebar-error">Could not load <code>' +
+          sysData.annotation + '</code>. ' + err.message + '</p>';
+      }
+    }
+
+    function closeSidebar() {
+      var sidebar = document.getElementById('sidebar');
+      sidebar.classList.remove('open');
+      sidebar.addEventListener('transitionend', function handler() {
+        sidebar.removeEventListener('transitionend', handler);
+        if (cy) cy.resize();
+      });
+      if (cy) cy.nodes().unselect();
+    }
+
+    /* ============================
+       Edge Type Filtering
+       ============================ */
+    function buildEdgeFilters(edges) {
+      var counts = {};
+      for (var i = 0; i < edges.length; i++) {
+        counts[edges[i].type] = (counts[edges[i].type] || 0) + 1;
+      }
+
+      var container = document.getElementById('edge-filters');
+      for (const [type, cfg] of Object.entries(EDGE_STYLES)) {
+        if (!counts[type]) continue;
+        var btn = document.createElement('button');
+        btn.className = 'edge-toggle active';
+        btn.dataset.type = type;
+        btn.innerHTML =
+          '<span class="edge-swatch" style="border-color:' + cfg.color +
+          ';border-top-style:' + cfg.line + '"></span>' +
+          cfg.label + ' <span style="color:var(--text-muted)">(' + counts[type] + ')</span>';
+        btn.addEventListener('click', function () {
+          this.classList.toggle('active');
+          applyEdgeFilters();
+        });
+        container.appendChild(btn);
+      }
+    }
+
+    function applyEdgeFilters() {
+      var active = new Set(
+        Array.from(document.querySelectorAll('.edge-toggle.active')).map(function (b) { return b.dataset.type; })
+      );
+      cy.edges().forEach(function (edge) {
+        edge.style('display', active.has(edge.data('type')) ? 'element' : 'none');
+      });
+    }
+
+    /* ============================
+       Cluster Focus
+       ============================ */
+    function buildClusterLegend(clusters) {
+      var container = document.getElementById('cluster-chips');
+      for (const [id, info] of Object.entries(clusters)) {
+        var chip = document.createElement('button');
+        chip.className = 'cluster-chip';
+        chip.dataset.cluster = id;
+        var chipColor = CLUSTER_COLORS[id] || info.color;
+        chip.innerHTML = '<span class="cluster-dot" style="background:' + chipColor + '"></span>' + info.label;
+        chip.addEventListener('click', function () {
+          var cid = this.dataset.cluster;
+          if (focusedCluster === cid) {
+            clearFocus();
+          } else {
+            focusCluster(cid);
+          }
+        });
+        container.appendChild(chip);
+      }
+
+      document.getElementById('clear-focus').addEventListener('click', clearFocus);
+    }
+
+    function focusCluster(clusterId) {
+      focusedCluster = clusterId;
+      var clusterNodes = cy.nodes('[cluster="' + clusterId + '"]');
+      var otherNodes = cy.nodes().difference(clusterNodes);
+      var clusterEdges = clusterNodes.connectedEdges().filter(function (e) {
+        return clusterNodes.contains(e.source()) && clusterNodes.contains(e.target());
+      });
+      var otherEdges = cy.edges().difference(clusterEdges);
+
+      otherNodes.addClass('dimmed');
+      otherEdges.addClass('dimmed');
+      clusterNodes.removeClass('dimmed');
+      clusterEdges.removeClass('dimmed');
+      cy.fit(clusterNodes, 60);
+
+      document.querySelectorAll('.cluster-chip').forEach(function (c) {
+        c.classList.toggle('focused', c.dataset.cluster === clusterId);
+      });
+      document.getElementById('clear-focus').classList.add('visible');
+    }
+
+    function clearFocus() {
+      focusedCluster = null;
+      cy.nodes().removeClass('dimmed highlighted');
+      cy.edges().removeClass('dimmed');
+      cy.fit(null, 40);
+      document.querySelectorAll('.cluster-chip').forEach(function (c) {
+        c.classList.remove('focused');
+      });
+      document.getElementById('clear-focus').classList.remove('visible');
+    }
+
+    /* ============================
+       Search
+       ============================ */
+    function initSearch() {
+      var timer = null;
+      var input = document.getElementById('search');
+      input.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () { handleSearch(input.value.trim()); }, 150);
+      });
+    }
+
+    function handleSearch(query) {
+      if (!query) {
+        cy.nodes().removeClass('search-dim');
+        cy.edges().removeClass('search-dim');
+        return;
+      }
+      var q = query.toLowerCase();
+      cy.nodes().forEach(function (node) {
+        var match = node.data('label').toLowerCase().includes(q) ||
+                    node.data('id').toLowerCase().includes(q);
+        node.toggleClass('search-dim', !match);
+      });
+      cy.edges().forEach(function (edge) {
+        var dim = edge.source().hasClass('search-dim') || edge.target().hasClass('search-dim');
+        edge.toggleClass('search-dim', dim);
+      });
+
+      var matches = cy.nodes().not('.search-dim');
+      if (matches.length === 1) {
+        matches[0].select();
+        openAnnotation(matches[0].data());
+      }
+    }
+
+    /* ============================
+       Init
+       ============================ */
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        var data = await loadData();
+        systemIndex = data.index;
+        var elements = buildElements(data.index, data.edges);
+        initGraph(elements);
+        buildEdgeFilters(data.edges);
+        buildClusterLegend(data.index.clusters);
+        initSearch();
+        document.getElementById('loading').classList.add('hidden');
+      } catch (err) {
+        console.error('Graph init failed:', err);
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error-msg').textContent = 'Failed to load graph data: ' + err.message;
+        document.getElementById('error-overlay').classList.add('visible');
+      }
+
+      document.getElementById('sidebar-close').addEventListener('click', closeSidebar);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSidebar();
+      });
+    });
+  </script>
+</body>
+</html>
