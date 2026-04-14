@@ -169,10 +169,37 @@
       background: transparent; color: #b5443e; cursor: pointer; font-size: 14px;
     }
 
+    /* --- Zoom controls --- */
+    #zoom-controls {
+      position: absolute; bottom: 16px; right: 16px; z-index: 5;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 7px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      min-width: 148px;
+    }
+    #zoom-controls .zoom-label {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #zoom-slider {
+      width: 100%; cursor: pointer;
+      accent-color: var(--accent);
+    }
+    #reset-view {
+      padding: 4px 8px; border-radius: 6px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text); font-size: 12px; cursor: pointer;
+      transition: background 0.15s; width: 100%; text-align: center;
+    }
+    #reset-view:hover { background: var(--bg-elevated); }
+
     /* --- Responsive --- */
     @media (max-width: 900px) {
       #sidebar.open { position: absolute; right: 0; top: 0; bottom: 0; width: 100%; z-index: 10; }
       #legend-panel { bottom: 8px; left: 8px; max-height: 200px; }
+      #zoom-controls { bottom: 8px; right: 8px; min-width: 124px; }
     }
   </style>
 </head>
@@ -201,6 +228,16 @@
       </div>
       <div id="sidebar-content"></div>
     </aside>
+
+    <!-- Zoom controls -->
+    <div id="zoom-controls">
+      <div class="zoom-label">
+        <span>Zoom</span>
+        <span id="zoom-val">100%</span>
+      </div>
+      <input type="range" id="zoom-slider" min="15" max="400" step="1" value="100">
+      <button id="reset-view">Reset View</button>
+    </div>
 
     <!-- Floating cluster legend -->
     <div id="legend-panel">
@@ -702,6 +739,38 @@
     }
 
     /* ============================
+       Zoom Controls
+       ============================ */
+    function initZoomControls() {
+      var slider = document.getElementById('zoom-slider');
+      var zoomVal = document.getElementById('zoom-val');
+      var resetBtn = document.getElementById('reset-view');
+
+      function syncFromCy() {
+        var pct = Math.round(cy.zoom() * 100);
+        pct = Math.max(15, Math.min(400, pct));
+        slider.value = pct;
+        zoomVal.textContent = pct + '%';
+      }
+      syncFromCy(); // seed from initial fit zoom
+
+      slider.addEventListener('input', function () {
+        cy.zoom({
+          level: parseInt(this.value) / 100,
+          renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 }
+        });
+        zoomVal.textContent = this.value + '%';
+      });
+
+      // Keep slider in sync when user scrolls/pinches
+      cy.on('zoom', syncFromCy);
+
+      resetBtn.addEventListener('click', function () {
+        cy.fit(null, 40);
+      });
+    }
+
+    /* ============================
        Init
        ============================ */
     document.addEventListener('DOMContentLoaded', async function () {
@@ -713,6 +782,7 @@
         buildEdgeFilters(data.edges);
         buildClusterLegend(data.index.clusters);
         initSearch();
+        initZoomControls();
         document.getElementById('loading').classList.add('hidden');
       } catch (err) {
         console.error('Graph init failed:', err);
